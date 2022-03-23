@@ -44,6 +44,7 @@ The next requirements are necessary to work with this project:
 ### Dependencies
 * [Spring Boot 2.6.4](https://docs.spring.io/spring-boot/docs/2.6.4/reference/html/): open source Java-based framework that offers a fast way to build applications.
 * [Spring Web 5.3.16](https://docs.spring.io/spring-framework/docs/5.3.16/reference/html/web.html#spring-web): library for building an API Gateway on top of Spring WebFlux.
+* [Githook-maven-plugin](https://mvnrepository.com/artifact/io.github.phillipuniverse/githook-maven-plugin/1.0.5): Maven plugin to configure and install local git hooks.
 
 ### Development dependencies
 * [Spring Boot Devtools](https://docs.spring.io/spring-boot/docs/2.6.4/reference/htmlsingle/#using.devtools): additional set of tools that can make the application development experience a little more pleasant.
@@ -71,7 +72,10 @@ The next requirements are necessary to work with this project:
 ## Usage
 
 ### Installation
-> TODO
+To install the project execute
+```sh
+mvn clean install
+```
 
 ### Run tests
 > TODO
