@@ -18,6 +18,7 @@
 		<githook-maven-plugin>1.0.5</githook-maven-plugin>
 		<checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
 		<checkstyle.version>9.2.1</checkstyle.version>
+		<junit-platform-suite.version>1.8.2</junit-platform-suite.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -37,9 +38,24 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite-api</artifactId>
+			<version>${junit-platform-suite.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite-engine</artifactId>
+			<version>${junit-platform-suite.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -63,9 +79,10 @@
 							<hooks>
 								<pre-commit>
 									mvn checkstyle:check
+									mvn test -Punit
 								</pre-commit>
 								<pre-push>
-									echo "Validating in pre-push..."
+									mvn test -Pit
 								</pre-push>
 							</hooks>
 						</configuration>
@@ -105,5 +122,44 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>unit</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<groups>UnitTest</groups>
+							<excludedGroups>IntegrationTest</excludedGroups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>it</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<groups>IntegrationTest</groups>
+							<excludedGroups>UnitTest</excludedGroups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
