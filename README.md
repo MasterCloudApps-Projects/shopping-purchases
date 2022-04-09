@@ -45,6 +45,13 @@ The next requirements are necessary to work with this project:
 * [Spring Boot 2.6.4](https://docs.spring.io/spring-boot/docs/2.6.4/reference/html/): open source Java-based framework that offers a fast way to build applications.
 * [Spring Web 5.3.16](https://docs.spring.io/spring-framework/docs/5.3.16/reference/html/web.html#spring-web): library for building an API Gateway on top of Spring WebFlux.
 * [Githook-maven-plugin](https://mvnrepository.com/artifact/io.github.phillipuniverse/githook-maven-plugin/1.0.5): Maven plugin to configure and install local git hooks.
+* [Lombok 1.18.22](https://projectlombok.org/):  java library that automatically plugs into your editor and build tools, spicing up your java.
+* [MapStruct 1.4.2.Final](https://mapstruct.org/): MapStruct is a code generator that greatly simplifies the implementation of mappings between Java bean types based on a convention over configuration approach.
+* kafka
+* spring-data-jpa
+* jsonwebtoken
+
+[//]: # (* flyway)
 
 ### Development dependencies
 * [Spring Boot Devtools](https://docs.spring.io/spring-boot/docs/2.6.4/reference/htmlsingle/#using.devtools): additional set of tools that can make the application development experience a little more pleasant.
@@ -56,11 +63,18 @@ The next requirements are necessary to work with this project:
     * Mockito: A Java mocking framework.
     * JSONassert: An assertion library for JSON.
     * JsonPath: XPath for JSON.
+* [Testcontainers](https://www.testcontainers.org/): Java library that supports JUnit tests, providing lightweight, throwaway instances of common databases, Selenium web browsers, or anything else that can run in a Docker container.
+* [JUnit Platform Suite Engine](https://junit.org/junit5/docs/current/user-guide/#junit-platform-suite-engine): The JUnit Platform supports the declarative definition and execution of suites of tests from any test engine using the JUnit Platform.
 
 ## Project structure
 > TODO
 
 ## Configuration
+**NOTE:** If the containers are not accessible via localhost, it will be necessary to use ${DOCKER_HOST_IP} instead of localhost. To do this, give a value to the variable:
+````
+export DOCKER_HOST_IP=127.0.0.1
+```
+
 > TODO
 
 ### Properties description

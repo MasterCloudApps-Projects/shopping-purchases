@@ -1,0 +1,24 @@
+security:
+  jwt:
+    token:
+      secret-key: secret
+
+server:
+  ssl:
+    key-store-password: tfmamartinm
+    key-store: classpath:keystore.jks
+  port: 8446
+
+kafka:
+  bootstrapAddress: 127.0.0.1:9092
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/purchases
+    username: root
+    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true

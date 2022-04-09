@@ -19,8 +19,8 @@ paths:
       security:
         - bearerAuth: [ ]
       responses:
-        '201':
-          description: Created shopping cart
+        '202':
+          description: Shopping cart creation accepted
           headers:
             Location:
               required: true
@@ -28,17 +28,6 @@ paths:
               schema:
                 type: string
                 example: https://localhost:8446/api/v1/shopping-carts/1
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: ID of the created shopping cart.
-                    example: 1
-                required:
-                  - id
           links:
             GetShoppingCartById:
               operationId: getShoppingCartById
