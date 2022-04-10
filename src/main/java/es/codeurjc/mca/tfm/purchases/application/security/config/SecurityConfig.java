@@ -1,7 +1,7 @@
 package es.codeurjc.mca.tfm.purchases.application.security.config;
 
-import es.codeurjc.mca.tfm.purchases.application.security.filters.JWTAuthorizationFilter;
-import es.codeurjc.mca.tfm.purchases.application.security.filters.JWTTokenProvider;
+import es.codeurjc.mca.tfm.purchases.application.security.filters.JwtAuthorizationFilter;
+import es.codeurjc.mca.tfm.purchases.application.security.filters.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,14 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   /**
    * JWT token provider.
    */
-  private JWTTokenProvider jwtTokenProvider;
+  private JwtTokenProvider jwtTokenProvider;
 
   /**
    * Constructor.
    *
    * @param jwtTokenProvider JWT token provider.
    */
-  public SecurityConfig(JWTTokenProvider jwtTokenProvider) {
+  public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
     this.jwtTokenProvider = jwtTokenProvider;
   }
 
@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         // application urls
         .anyRequest().authenticated().and()
-        .addFilter(new JWTAuthorizationFilter(authenticationManager(), this.jwtTokenProvider));
+        .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.jwtTokenProvider));
   }
 
 }

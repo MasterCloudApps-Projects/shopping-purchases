@@ -15,17 +15,18 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 /**
  * JWT authorization filter.
  */
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
   private static final String NO_TOKEN_PROVIDED_MSG = "{\n\t\"error\": \"No token provided.\"\n}";
 
-  private static final String INVALID_TOKEN_MSG = "{\n\t\"error\": \"Invalid or expired token.\"\n}";
+  private static final String INVALID_TOKEN_MSG =
+      "{\n\t\"error\": \"Invalid or expired token.\"\n}";
 
 
   /**
    * JWT token provider.
    */
-  private JWTTokenProvider jwtTokenProvider;
+  private JwtTokenProvider jwtTokenProvider;
 
   /**
    * Constructor.
@@ -33,8 +34,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
    * @param authManager      authentication manager.
    * @param jwtTokenProvider JWT token provider.
    */
-  public JWTAuthorizationFilter(AuthenticationManager authManager,
-      JWTTokenProvider jwtTokenProvider) {
+  public JwtAuthorizationFilter(AuthenticationManager authManager,
+      JwtTokenProvider jwtTokenProvider) {
     super(authManager);
     this.jwtTokenProvider = jwtTokenProvider;
   }
@@ -45,8 +46,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
    * @param req   http request.
    * @param res   http response.
    * @param chain filter chain.
-   * @throws IOException
-   * @throws ServletException
+   * @throws IOException      if an input/output error happens.
+   * @throws ServletException when the servlet needs to throw an exception.l
    */
   @Override
   protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,

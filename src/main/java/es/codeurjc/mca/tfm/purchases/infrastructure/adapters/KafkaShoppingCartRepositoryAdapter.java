@@ -58,8 +58,8 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   public void create(ShoppingCartDto shoppingCartDto) {
     ObjectMapper objectMapper = new ObjectMapper();
     try {
-      ShoppingCartCreationRequestedEvent shoppingCartCreationRequestedEvent = this.shoppingCartMapper.map(
-          shoppingCartDto);
+      ShoppingCartCreationRequestedEvent shoppingCartCreationRequestedEvent =
+          this.shoppingCartMapper.map(shoppingCartDto);
       this.kafkaTemplate.send(SHOPPING_CARTS_TOPIC,
           objectMapper.writeValueAsString(shoppingCartCreationRequestedEvent));
       log.info("Sent shopping cart creation requested event {}",

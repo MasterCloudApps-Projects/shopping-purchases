@@ -42,8 +42,7 @@ public class ShoppingCartCommandController {
    * Create a shopping cart for authenticated user.
    *
    * @param authentication authenticated user info.
-   * @return accepted code with Location header with shopping cart identifier if request finish
-   * successfully.
+   * @return accepted code with Location header if request finish successfully.
    */
   @PostMapping
   public ResponseEntity<Void> createShoppingCart(

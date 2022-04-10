@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * JWT token provider.
  */
 @Component
-public class JWTTokenProvider {
+public class JwtTokenProvider {
 
   private static final String HEADER_AUTHORIZATION_KEY = "Authorization";
 

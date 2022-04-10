@@ -55,6 +55,13 @@ public interface InfraShoppingCartMapper {
    */
   ShoppingCartDto map(ShoppingCartEntity shoppingCartEntity);
 
+  /**
+   * Map a string to a list of items DTOs.
+   *
+   * @param items string to map.
+   * @return a list of items DTOs.
+   * @throws JsonProcessingException if an error happens.
+   */
   default List<ItemDto> map(String items) throws JsonProcessingException {
     if (items == null) {
       return List.of();
