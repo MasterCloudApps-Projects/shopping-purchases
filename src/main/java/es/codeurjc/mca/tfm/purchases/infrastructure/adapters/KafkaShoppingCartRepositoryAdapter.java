@@ -82,4 +82,17 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
         .map(this.shoppingCartMapper::map);
   }
 
+  /**
+   * Get shopping cart by identifier and user.
+   *
+   * @param id     shopping cart identifier.
+   * @param userId user identifier.
+   * @return optional of shopping cart with id and user.
+   */
+  @Override
+  public Optional<ShoppingCartDto> getByIdAndUser(Long id, Integer userId) {
+    return this.jpaShoppingCartRepository.findByIdAndUserId(id, userId)
+        .map(this.shoppingCartMapper::map);
+  }
+
 }

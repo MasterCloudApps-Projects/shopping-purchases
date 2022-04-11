@@ -5,6 +5,7 @@ import es.codeurjc.mca.tfm.purchases.domain.exceptions.IncompleteShoppingCartAlr
 import es.codeurjc.mca.tfm.purchases.domain.models.ShoppingCart;
 import es.codeurjc.mca.tfm.purchases.domain.ports.in.ShoppingCartUseCase;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.ShoppingCartRepository;
+import java.util.Optional;
 
 /**
  * Shopping cart use case implementation.
@@ -42,6 +43,18 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
     this.shoppingCartRepository.create(shoppingCartDto);
 
     return shoppingCartDto;
+  }
+
+  /**
+   * Gets a shopping cart with passed id and user.
+   *
+   * @param id     shopping cart identifier.
+   * @param userId user identifier.
+   * @return an optional of shopping cart DTO.
+   */
+  @Override
+  public Optional<ShoppingCartDto> get(Long id, Integer userId) {
+    return this.shoppingCartRepository.getByIdAndUser(id, userId);
   }
 
   /**

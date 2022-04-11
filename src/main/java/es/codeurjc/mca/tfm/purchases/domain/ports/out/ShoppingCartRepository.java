@@ -23,4 +23,13 @@ public interface ShoppingCartRepository {
    */
   Optional<ShoppingCartDto> getIncompleteByUser(Integer userId);
 
+  /**
+   * Get shopping cart by identifier and user.
+   *
+   * @param id     shopping cart identifier.
+   * @param userId user identifier.
+   * @return optional of shopping cart with id and user.
+   */
+  Optional<ShoppingCartDto> getByIdAndUser(Long id, Integer userId);
+
 }

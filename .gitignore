@@ -31,3 +31,5 @@ target
 /docker/mysql_db
 /docker/zookeeper
 /docker/kafka
+
+.DS_Store

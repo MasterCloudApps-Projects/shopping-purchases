@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Shopping cart JPA repository interface.
  */
 @Repository
-public interface JpaShoppingCartRepository extends JpaRepository<ShoppingCartEntity, Integer> {
+public interface JpaShoppingCartRepository extends JpaRepository<ShoppingCartEntity, Long> {
 
   /**
    * Find shopping cart by user identifier and completed false.
@@ -18,5 +18,14 @@ public interface JpaShoppingCartRepository extends JpaRepository<ShoppingCartEnt
    * @return optional of incomplete shopping cart of passed user, else empty.
    */
   Optional<ShoppingCartEntity> findByUserIdAndCompletedIsFalse(Integer userId);
+
+  /**
+   * Find shopping cart by identifier and user identifier.
+   *
+   * @param id     shopping cart identifier.
+   * @param userId user identifier.
+   * @return optional of shopping cart with passed id and user, else empty.
+   */
+  Optional<ShoppingCartEntity> findByIdAndUserId(Long id, Integer userId);
 
 }
