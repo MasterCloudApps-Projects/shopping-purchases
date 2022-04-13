@@ -134,8 +134,8 @@ paths:
       security:
         - bearerAuth: [ ]
       responses:
-        '200':
-          description: deleted shopping cart info.
+        '202':
+          description: Accepted shopping cart deletion with shopping cart to delete info.
           content:
             application/json:
               schema:
@@ -179,12 +179,8 @@ paths:
       security:
         - bearerAuth: [ ]
       responses:
-        '200':
-          description: updated shopping cart info.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShoppingCartResponse'
+        '202':
+          description: Accepted to complete shopping cart.
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -241,12 +237,8 @@ paths:
       security:
         - bearerAuth: [ ]
       responses:
-        '200':
-          description: updated shopping cart info.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ShoppingCartResponse'
+        '202':
+          description: Accepted to update shopping cart info.
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -295,8 +287,8 @@ paths:
       security:
         - bearerAuth: [ ]
       responses:
-        '200':
-          description: deleted shopping cart info.
+        '202':
+          description: Accepted shopping cart item deletion.
           content:
             application/json:
               schema:
