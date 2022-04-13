@@ -109,8 +109,7 @@ public class ShoppingCartCommandController {
     } catch (NotFoundException notFoundException) {
       log.error("Shopping cart not found with id and user", id, userId);
       throw notFoundException;
-    } catch (
-        Exception e) {
+    } catch (Exception e) {
       log.error(e.getMessage());
       e.printStackTrace();
       throw new InternalServerErrorException(e.getMessage());
