@@ -25,4 +25,13 @@ public interface ShoppingCartUseCase {
    */
   Optional<ShoppingCartDto> get(Long id, Integer userId);
 
+  /**
+   * Deletes a shopping cart with passed id and user.
+   *
+   * @param id     shopping cart identifier.
+   * @param userId user identifier.
+   * @return an optional of deleted shopping cart DTO.
+   */
+  Optional<ShoppingCartDto> delete(Long id, Integer userId);
+
 }

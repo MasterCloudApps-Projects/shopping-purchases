@@ -11,12 +11,11 @@ import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DisplayName("ShoppingCartQueryController integration tests")
 public class ShoppingCartQueryControllerTest extends AuthenticatedBaseController {
-
-  private static final Long SHOPPING_CART_ID = 1L;
 
   @Test
   @DirtiesContext
@@ -60,6 +59,19 @@ public class ShoppingCartQueryControllerTest extends AuthenticatedBaseController
     assertFalse(shoppingCartResponseDto.isCompleted());
     assertTrue(shoppingCartResponseDto.getItems().isEmpty());
     assertEquals(0.0, shoppingCartResponseDto.getTotalPrice());
+  }
+
+  @Test
+  @DisplayName("Test get shopping cart with invalid identifier")
+  public void givenInvalidShoppingCartIdWhenGetThenShouldReturnBadRequestResponse() {
+
+    this.webClient
+        .get()
+        .uri(SHOPPING_CART_BASE_URL + "/" + NOT_NUMERIC_ID)
+        .headers(http -> http.setBearerAuth(this.generateExpiredToken()))
+        .exchange()
+        .expectStatus()
+        .isForbidden();
   }
 
   @Test
@@ -119,6 +131,19 @@ public class ShoppingCartQueryControllerTest extends AuthenticatedBaseController
         .expectStatus()
         .isNotFound();
 
+  }
+
+  @Test
+  @DisplayName("Test get shopping cart when there is an internal error")
+  public void givenShoppingCartIdWhenGetAndInternalErrorHappensThenShouldReturnInternalServerErrorResponse() {
+
+    this.webClient
+        .get()
+        .uri(SHOPPING_CART_BASE_URL + "/" + SHOPPING_CART_ID)
+        .headers(http -> http.setBearerAuth(this.generateTokenWithNotNumericUserId()))
+        .exchange()
+        .expectStatus()
+        .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
 }

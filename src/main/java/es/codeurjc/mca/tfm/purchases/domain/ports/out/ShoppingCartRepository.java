@@ -32,4 +32,11 @@ public interface ShoppingCartRepository {
    */
   Optional<ShoppingCartDto> getByIdAndUser(Long id, Integer userId);
 
+  /**
+   * Delete a shopping cart by id.
+   *
+   * @param id shopping cart identifer.
+   */
+  void delete(Long id);
+
 }

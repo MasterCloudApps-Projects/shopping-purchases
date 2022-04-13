@@ -40,7 +40,11 @@ public abstract class AuthenticatedBaseController extends TestContainersBase {
 
   protected static final String LOCATION_HEADER = "Location";
 
-  protected static final long KAFKA_TIMEOUT = 10000L;
+  protected static final long KAFKA_TIMEOUT = 15000L;
+
+  protected static final Long SHOPPING_CART_ID = 1L;
+
+  protected static final String NOT_NUMERIC_ID = "Nan";
 
   @Value("${security.jwt.token.secret-key}")
   private String secretKey;

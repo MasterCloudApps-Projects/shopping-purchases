@@ -74,7 +74,7 @@ public class ShoppingCartCommandControllerTest extends AuthenticatedBaseControll
   @Test
   @DisplayName("Test shopping cart creation when already exist an incomplete shopping cart")
   @DirtiesContext
-  public void givenShoppingCartCreationRequestWhenAlreadyExistAnIncompleteShoppingCartThenShouldReturnConflictResponse()
+  public void givenShoppingCartCreationRequestWhenCreateAndAlreadyExistAnIncompleteShoppingCartThenShouldReturnConflictResponse()
       throws InterruptedException {
     String token = this.generateValidToken();
 
@@ -100,7 +100,7 @@ public class ShoppingCartCommandControllerTest extends AuthenticatedBaseControll
 
   @Test
   @DisplayName("Test shopping cart creation when there is an internal error")
-  public void givenShoppingCartCreationRequestWhenInternalErrorHappensThenShouldReturnInternalServerErrorResponse() {
+  public void givenShoppingCartCreationRequestWhenCreateAndInternalErrorHappensThenShouldReturnInternalServerErrorResponse() {
 
     this.webClient
         .post()
@@ -111,6 +111,141 @@ public class ShoppingCartCommandControllerTest extends AuthenticatedBaseControll
         .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @Test
+  @DisplayName("Test shopping cart deletion successfully")
+  @DirtiesContext
+  public void givenShoppingCartIdWhenDeleteThenShouldReturnOkResponseAndDeletedShoppingCartInfo()
+      throws InterruptedException {
+    String token = this.generateValidToken();
+
+    HttpHeaders headers = this.webClient
+        .post()
+        .uri(SHOPPING_CART_BASE_URL)
+        .headers(http -> http.setBearerAuth(token))
+        .exchange()
+        .expectStatus()
+        .isAccepted()
+        .expectHeader()
+        .value(LOCATION_HEADER,
+            startsWith("https://localhost:" + this.port + SHOPPING_CART_BASE_URL + "/"))
+        .returnResult(Map.class)
+        .getResponseHeaders();
+
+    String[] locationUrlParts = headers.get(LOCATION_HEADER).get(0).split("/");
+    Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
+    assertNotNull(shoppingCartId);
+
+    Thread.sleep(KAFKA_TIMEOUT);
+
+    this.webClient
+        .get()
+        .uri(SHOPPING_CART_BASE_URL + "/" + shoppingCartId)
+        .headers(http -> http.setBearerAuth(token))
+        .exchange()
+        .expectStatus()
+        .isOk();
+
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + shoppingCartId)
+        .headers(http -> http.setBearerAuth(token))
+        .exchange()
+        .expectStatus()
+        .isAccepted();
+
+    Thread.sleep(KAFKA_TIMEOUT);
+
+    this.webClient
+        .get()
+        .uri(SHOPPING_CART_BASE_URL + "/" + shoppingCartId)
+        .headers(http -> http.setBearerAuth(token))
+        .exchange()
+        .expectStatus()
+        .isNotFound();
+
+  }
+
+  @Test
+  @DisplayName("Test shopping cart deletion with invalid identifier")
+  public void givenInvalidExistingShoppingCartIdWhenDeleteThenShouldReturnBadRequestResponse() {
+
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + NOT_NUMERIC_ID)
+        .headers(http -> http.setBearerAuth(this.generateValidToken()))
+        .exchange()
+        .expectStatus()
+        .isBadRequest();
+  }
+
+
+  @Test
+  @DisplayName("Test shopping cart deletion without token")
+  public void givenShoppingCartIdWithoutTokenWhenDeleteThenShouldReturnUnauthorizedResponse() {
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + SHOPPING_CART_ID)
+        .exchange()
+        .expectStatus()
+        .isUnauthorized();
+  }
+
+  @Test
+  @DisplayName("Test shopping cart deletion with invalid token")
+  public void givenShoppingCartIdWithInvalidTokenWhenDeleteThenShouldReturnForbiddenResponse() {
+
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + SHOPPING_CART_ID)
+        .headers(http -> http.setBearerAuth(this.generateExpiredToken()))
+        .exchange()
+        .expectStatus()
+        .isForbidden();
+  }
+
+  @Test
+  @DisplayName("Test shopping cart deletion with non existing identifier")
+  public void givenNonExistingShoppingCartIdWhenDeleteThenShouldReturnNotFoundResponse() {
+
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + SHOPPING_CART_ID)
+        .headers(http -> http.setBearerAuth(this.generateValidToken()))
+        .exchange()
+        .expectStatus()
+        .isNotFound();
+  }
+
+  @Test
+  @DisplayName("Test shopping cart deletion with non existing identifier")
+  @DirtiesContext
+  public void givenCompletedShoppingCartIdWhenDeleteThenShouldReturnConflictResponse() {
+
+    ShoppingCartEntity shoppingCartEntity = buildShoppingCart(System.currentTimeMillis());
+    shoppingCartEntity.setCompleted(true);
+    this.jpaShoppingCartRepository.save(shoppingCartEntity);
+
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + shoppingCartEntity.getId())
+        .headers(http -> http.setBearerAuth(this.generateValidToken()))
+        .exchange()
+        .expectStatus()
+        .isEqualTo(HttpStatus.CONFLICT);
+  }
+
+  @Test
+  @DisplayName("Test shopping cart deletion when there is an internal error")
+  public void givenShoppingCartIdRequestWhenDeleteAndInternalErrorHappensThenShouldReturnInternalServerErrorResponse() {
+
+    this.webClient
+        .delete()
+        .uri(SHOPPING_CART_BASE_URL + "/" + SHOPPING_CART_ID)
+        .headers(http -> http.setBearerAuth(this.generateTokenWithNotNumericUserId()))
+        .exchange()
+        .expectStatus()
+        .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 
   private ShoppingCartEntity buildShoppingCart(Long id) {
     ShoppingCartEntity shoppingCartEntity = new ShoppingCartEntity();

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.ShoppingCartRepository;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartDeletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraShoppingCartMapper;
 import es.codeurjc.mca.tfm.purchases.infrastructure.repositories.JpaShoppingCartRepository;
 import java.util.Optional;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepository {
 
-  private static final String SHOPPING_CARTS_TOPIC = "shopping-carts";
+  private static final String CREATE_SHOPPING_CARTS_TOPIC = "create-shopping-carts";
+
+  private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
 
   /**
    * Shopping cart mapper.
@@ -60,7 +63,7 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
     try {
       ShoppingCartCreationRequestedEvent shoppingCartCreationRequestedEvent =
           this.shoppingCartMapper.map(shoppingCartDto);
-      this.kafkaTemplate.send(SHOPPING_CARTS_TOPIC,
+      this.kafkaTemplate.send(CREATE_SHOPPING_CARTS_TOPIC,
           objectMapper.writeValueAsString(shoppingCartCreationRequestedEvent));
       log.info("Sent shopping cart creation requested event {}",
           shoppingCartCreationRequestedEvent);
@@ -93,6 +96,27 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   public Optional<ShoppingCartDto> getByIdAndUser(Long id, Integer userId) {
     return this.jpaShoppingCartRepository.findByIdAndUserId(id, userId)
         .map(this.shoppingCartMapper::map);
+  }
+
+  /**
+   * Delete a shopping cart by id.
+   *
+   * @param id shopping cart identifer.
+   */
+  @Override
+  public void delete(Long id) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      ShoppingCartDeletionRequestedEvent shoppingCartDeletionRequestedEvent =
+          new ShoppingCartDeletionRequestedEvent(id);
+      this.kafkaTemplate.send(DELETE_SHOPPING_CARTS_TOPIC,
+          objectMapper.writeValueAsString(shoppingCartDeletionRequestedEvent));
+      log.info("Sent shopping cart deletion requested event {}",
+          shoppingCartDeletionRequestedEvent);
+    } catch (JsonProcessingException e) {
+      log.error("Error sending shopping cart deletion requested event");
+      e.printStackTrace();
+    }
   }
 
 }

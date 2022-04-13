@@ -17,7 +17,9 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Profile("!test")
 public class KafkaTopicConfig {
 
-  private static final String SHOPPING_CARTS_TOPIC = "shopping-carts";
+  private static final String CREATE_SHOPPING_CARTS_TOPIC = "create-shopping-carts";
+
+  private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
 
   /**
    * Kafka bootstrap server address.
@@ -38,13 +40,23 @@ public class KafkaTopicConfig {
   }
 
   /**
-   * Shopping carts topic bean.
+   * Create shopping carts topic bean.
    *
-   * @return NewTopic instance for shopping carts topic.
+   * @return NewTopic instance for create shopping carts topic.
    */
   @Bean
-  public NewTopic shoppingCartsTopic() {
-    return new NewTopic(SHOPPING_CARTS_TOPIC, 1, (short) 1);
+  public NewTopic createShoppingCartsTopic() {
+    return new NewTopic(CREATE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+  }
+
+  /**
+   * Delete shopping carts topic bean.
+   *
+   * @return NewTopic instance for delete shopping carts topic.
+   */
+  @Bean
+  public NewTopic deleteShoppingCartsTopic() {
+    return new NewTopic(DELETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
   }
 
 }

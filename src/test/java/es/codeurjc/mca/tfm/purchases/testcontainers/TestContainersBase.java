@@ -29,7 +29,7 @@ public class TestContainersBase {
             .withExposedService(ZOOKEEPER_SERVICE_NAME, ZOOKEEPER_PORT,
                 Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(30)))
             .withExposedService(KAFKA_SERVICE_NAME, KAFKA_PORT,
-                Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(60)));
+                Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(90)));
     ENVIRONMENT.start();
   }
 

@@ -45,6 +45,24 @@ public class ShoppingCart {
     this.totalPrice = 0d;
   }
 
+  /**
+   * All args constructor.
+   *
+   * @param id         identifier.
+   * @param userId     user identifier.
+   * @param completed  indicates if shopping cart is completed.
+   * @param items      list of items.
+   * @param totalPrice total price.
+   */
+  public ShoppingCart(Long id, Integer userId, boolean completed,
+      List<Item> items, Double totalPrice) {
+    this.id = id;
+    this.userId = userId;
+    this.completed = completed;
+    this.items = items;
+    this.totalPrice = totalPrice;
+  }
+
   public Long getId() {
     return id;
   }
@@ -83,5 +101,14 @@ public class ShoppingCart {
 
   public void setTotalPrice(Double totalPrice) {
     this.totalPrice = totalPrice;
+  }
+
+  /**
+   * Indicates if shopping cart is deletable.
+   *
+   * @return true if is deletable, else false.
+   */
+  public boolean isDeletable() {
+    return !this.completed;
   }
 }

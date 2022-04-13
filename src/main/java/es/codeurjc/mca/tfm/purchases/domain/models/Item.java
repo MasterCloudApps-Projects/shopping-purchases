@@ -25,6 +25,21 @@ public class Item {
    */
   private Double totalPrice;
 
+  /**
+   * All args constructor.
+   *
+   * @param productId  product identifier.
+   * @param unitPrice  item unit price.
+   * @param quantity   item quantity.
+   * @param totalPrice items total price.
+   */
+  public Item(Integer productId, Double unitPrice, Integer quantity, Double totalPrice) {
+    this.productId = productId;
+    this.unitPrice = unitPrice;
+    this.quantity = quantity;
+    this.totalPrice = totalPrice;
+  }
+
   public Integer getProductId() {
     return productId;
   }
