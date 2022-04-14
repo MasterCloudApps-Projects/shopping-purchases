@@ -111,4 +111,21 @@ public class ShoppingCart {
   public boolean isDeletable() {
     return !this.completed;
   }
+
+  /**
+   * Indicates if shopping cart is completable.
+   *
+   * @return true if is completable, else false.
+   */
+  public boolean isCompletable() {
+    return !this.completed && this.items != null && this.items.size() > 0 && this.totalPrice > 0;
+  }
+
+  /**
+   * Completes shopping cart setting completed attribute to true.
+   */
+  public void complete() {
+    this.completed = true;
+  }
+
 }

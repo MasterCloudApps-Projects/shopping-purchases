@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -104,6 +105,38 @@ public class ShoppingCartCommandController {
           .body(this.applicationShoppingCartMapper.map(shoppingCartDto));
     } catch (IllegalShoppingCartStateException illegalShoppingCartStateException) {
       log.error("Shopping cart with id {} and user {} is completed and can't be deleted", id,
+          userId);
+      throw new ConflictException(illegalShoppingCartStateException.getMessage());
+    } catch (NotFoundException notFoundException) {
+      log.error("Shopping cart not found with id and user", id, userId);
+      throw notFoundException;
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      e.printStackTrace();
+      throw new InternalServerErrorException(e.getMessage());
+    }
+  }
+
+  /**
+   * Completes a shopping cart.
+   *
+   * @param id             shopping cart identifier.
+   * @param authentication authenticated user info.
+   * @return accepted code response.
+   */
+  @PatchMapping("/{id}")
+  public ResponseEntity<Void> completeShoppingCart(
+      @PathVariable(name = "id") Long id,
+      Authentication authentication) {
+    Integer userId = null;
+    try {
+      userId = Integer.valueOf(authentication.getName());
+      this.shoppingCartUseCase.complete(id, userId).orElseThrow(
+          () -> new NotFoundException("Shopping cart with passed id not found for logged user"));
+
+      return ResponseEntity.accepted().build();
+    } catch (IllegalShoppingCartStateException illegalShoppingCartStateException) {
+      log.error("Shopping cart with id {} and user {} can't be completed", id,
           userId);
       throw new ConflictException(illegalShoppingCartStateException.getMessage());
     } catch (NotFoundException notFoundException) {

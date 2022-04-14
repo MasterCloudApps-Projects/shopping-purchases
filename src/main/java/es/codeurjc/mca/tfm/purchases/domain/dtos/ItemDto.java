@@ -29,6 +29,13 @@ public class ItemDto {
 
   /**
    * Constructor.
+   */
+  public ItemDto() {
+    super();
+  }
+
+  /**
+   * Constructor.
    *
    * @param item domain entity with necessary info.
    */

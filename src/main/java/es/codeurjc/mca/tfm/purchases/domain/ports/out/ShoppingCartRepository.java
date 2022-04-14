@@ -39,4 +39,11 @@ public interface ShoppingCartRepository {
    */
   void delete(Long id);
 
+  /**
+   * Complete a shopping cart by id.
+   *
+   * @param shoppingCartDto DTO with shopping cart info.
+   */
+  void complete(ShoppingCartDto shoppingCartDto);
+
 }

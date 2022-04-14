@@ -21,6 +21,12 @@ public class KafkaTopicConfig {
 
   private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
 
+  private static final String COMPLETE_SHOPPING_CARTS_TOPIC = "complete-shopping-carts";
+
+  private static final String CREATE_ORDERS_TOPIC = "create-orders";
+
+  private static final String VALIDATE_ITEMS_TOPIC = "validate-items";
+
   /**
    * Kafka bootstrap server address.
    */
@@ -57,6 +63,36 @@ public class KafkaTopicConfig {
   @Bean
   public NewTopic deleteShoppingCartsTopic() {
     return new NewTopic(DELETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+  }
+
+  /**
+   * Complete shopping carts topic bean.
+   *
+   * @return NewTopic instance for complete shopping carts topic.
+   */
+  @Bean
+  public NewTopic completeShoppingCartsTopic() {
+    return new NewTopic(COMPLETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+  }
+
+  /**
+   * Create orders topic bean.
+   *
+   * @return NewTopic instance for create orders topic.
+   */
+  @Bean
+  public NewTopic createOrdersTopic() {
+    return new NewTopic(CREATE_ORDERS_TOPIC, 1, (short) 1);
+  }
+
+  /**
+   * Validate order items topic bean.
+   *
+   * @return NewTopic instance for validate order items topic.
+   */
+  @Bean
+  public NewTopic validateOrderItemsTopic() {
+    return new NewTopic(VALIDATE_ITEMS_TOPIC, 1, (short) 1);
   }
 
 }

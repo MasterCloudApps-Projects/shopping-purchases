@@ -1,17 +1,13 @@
-package es.codeurjc.mca.tfm.purchases.application.dtos;
+package es.codeurjc.mca.tfm.purchases.infrastructure.events;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * Shopping cart response DTO.
+ * Completed shopping cart event.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ShoppingCartResponseDto {
+public class ShoppingCartCompletionRequestedEvent {
 
   /**
    * Shopping cart identifier.
@@ -31,7 +27,7 @@ public class ShoppingCartResponseDto {
   /**
    * List of items of the shopping cart.
    */
-  private List<ItemResponseDto> items;
+  private List<ShoppingCartItem> items;
 
   /**
    * Total price.

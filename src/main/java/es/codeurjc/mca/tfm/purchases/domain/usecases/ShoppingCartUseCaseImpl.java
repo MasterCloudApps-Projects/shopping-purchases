@@ -3,13 +3,11 @@ package es.codeurjc.mca.tfm.purchases.domain.usecases;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IllegalShoppingCartStateException;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IncompleteShoppingCartAlreadyExistsException;
-import es.codeurjc.mca.tfm.purchases.domain.models.Item;
+import es.codeurjc.mca.tfm.purchases.domain.mappers.DomainMapper;
 import es.codeurjc.mca.tfm.purchases.domain.models.ShoppingCart;
 import es.codeurjc.mca.tfm.purchases.domain.ports.in.ShoppingCartUseCase;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.ShoppingCartRepository;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Shopping cart use case implementation.
@@ -26,7 +24,7 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
    *
    * @param shoppingCartRepository shopping cart repository.
    */
-  public ShoppingCartUseCaseImpl(ShoppingCartRepository shoppingCartRepository) {
+  public ShoppingCartUseCaseImpl(final ShoppingCartRepository shoppingCartRepository) {
     this.shoppingCartRepository = shoppingCartRepository;
   }
 
@@ -43,7 +41,7 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
           "Already exists incomplete shopping cart with id=" + shoppingCart.getId());
     });
     ShoppingCart shoppingCart = new ShoppingCart(userId);
-    ShoppingCartDto shoppingCartDto = this.map(shoppingCart);
+    ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
     this.shoppingCartRepository.create(shoppingCartDto);
 
     return shoppingCartDto;
@@ -73,7 +71,7 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
     Optional<ShoppingCartDto> shoppingCartDtoOptional = this.shoppingCartRepository.getByIdAndUser(
         id, userId);
     if (shoppingCartDtoOptional.isPresent()) {
-      ShoppingCart shoppingCart = this.map(shoppingCartDtoOptional.get());
+      ShoppingCart shoppingCart = DomainMapper.map(shoppingCartDtoOptional.get());
       if (!shoppingCart.isDeletable()) {
         throw new IllegalShoppingCartStateException("Can't delete completed cart");
       }
@@ -83,28 +81,27 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
   }
 
   /**
-   * Maps shopping cart domain entity to DTO.
+   * Complete a shopping cart with passed id and user.
    *
-   * @param shoppingCart domain entity to map.
-   * @return mapped DTO.
+   * @param id     shopping cart identifier.
+   * @param userId user identifier.
+   * @return an optional of completed shopping cart DTO.
    */
-  private ShoppingCartDto map(ShoppingCart shoppingCart) {
-    return new ShoppingCartDto(shoppingCart);
-  }
-
-  /**
-   * Maps shopping cart DTO to domain entity.
-   *
-   * @param shoppingCartDto DTO to map.
-   * @return mapped domain entity.
-   */
-  private ShoppingCart map(ShoppingCartDto shoppingCartDto) {
-    List<Item> items = shoppingCartDto.getItems().stream()
-        .map(itemDto -> new Item(itemDto.getProductId(), itemDto.getUnitPrice(),
-            itemDto.getQuantity(), itemDto.getTotalPrice()))
-        .collect(Collectors.toList());
-    return new ShoppingCart(shoppingCartDto.getId(), shoppingCartDto.getUserId(),
-        shoppingCartDto.isCompleted(), items, shoppingCartDto.getTotalPrice());
+  @Override
+  public Optional<ShoppingCartDto> complete(Long id, Integer userId) {
+    Optional<ShoppingCartDto> shoppingCartDtoOptional = this.shoppingCartRepository.getByIdAndUser(
+        id, userId);
+    if (shoppingCartDtoOptional.isPresent()) {
+      ShoppingCart shoppingCart = DomainMapper.map(shoppingCartDtoOptional.get());
+      if (!shoppingCart.isCompletable()) {
+        throw new IllegalShoppingCartStateException("Can't complete cart");
+      }
+      shoppingCart.complete();
+      ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
+      this.shoppingCartRepository.complete(shoppingCartDto);
+      shoppingCartDtoOptional = Optional.of(shoppingCartDto);
+    }
+    return shoppingCartDtoOptional;
   }
 
 }

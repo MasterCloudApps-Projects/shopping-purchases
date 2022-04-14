@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.ShoppingCartRepository;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartDeletionRequestedEvent;
-import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraShoppingCartMapper;
+import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraMapper;
 import es.codeurjc.mca.tfm.purchases.infrastructure.repositories.JpaShoppingCartRepository;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,12 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
 
   private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
 
+  private static final String COMPLETE_SHOPPING_CARTS_TOPIC = "complete-shopping-carts";
+
   /**
-   * Shopping cart mapper.
+   * Mapper.
    */
-  private InfraShoppingCartMapper shoppingCartMapper;
+  private InfraMapper infraMapper;
 
   /**
    * Kafka template.
@@ -40,16 +43,23 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   private JpaShoppingCartRepository jpaShoppingCartRepository;
 
   /**
+   * Object mapper.
+   */
+  private ObjectMapper objectMapper;
+
+  /**
    * Constructor.
    *
+   * @param infraMapper   mapper.
    * @param kafkaTemplate kafka template.
    */
-  public KafkaShoppingCartRepositoryAdapter(InfraShoppingCartMapper shoppingCartMapper,
+  public KafkaShoppingCartRepositoryAdapter(InfraMapper infraMapper,
       KafkaTemplate<String, String> kafkaTemplate,
       JpaShoppingCartRepository jpaShoppingCartRepository) {
-    this.shoppingCartMapper = shoppingCartMapper;
+    this.infraMapper = infraMapper;
     this.kafkaTemplate = kafkaTemplate;
     this.jpaShoppingCartRepository = jpaShoppingCartRepository;
+    this.objectMapper = new ObjectMapper();
   }
 
   /**
@@ -59,12 +69,11 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
    */
   @Override
   public void create(ShoppingCartDto shoppingCartDto) {
-    ObjectMapper objectMapper = new ObjectMapper();
     try {
       ShoppingCartCreationRequestedEvent shoppingCartCreationRequestedEvent =
-          this.shoppingCartMapper.map(shoppingCartDto);
+          this.infraMapper.mapToShoppingCartCreationRequestedEvent(shoppingCartDto);
       this.kafkaTemplate.send(CREATE_SHOPPING_CARTS_TOPIC,
-          objectMapper.writeValueAsString(shoppingCartCreationRequestedEvent));
+          this.objectMapper.writeValueAsString(shoppingCartCreationRequestedEvent));
       log.info("Sent shopping cart creation requested event {}",
           shoppingCartCreationRequestedEvent);
     } catch (JsonProcessingException e) {
@@ -82,7 +91,7 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   @Override
   public Optional<ShoppingCartDto> getIncompleteByUser(Integer userId) {
     return this.jpaShoppingCartRepository.findByUserIdAndCompletedIsFalse(userId)
-        .map(this.shoppingCartMapper::map);
+        .map(this.infraMapper::map);
   }
 
   /**
@@ -95,7 +104,7 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   @Override
   public Optional<ShoppingCartDto> getByIdAndUser(Long id, Integer userId) {
     return this.jpaShoppingCartRepository.findByIdAndUserId(id, userId)
-        .map(this.shoppingCartMapper::map);
+        .map(this.infraMapper::map);
   }
 
   /**
@@ -105,16 +114,35 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
    */
   @Override
   public void delete(Long id) {
-    ObjectMapper objectMapper = new ObjectMapper();
     try {
       ShoppingCartDeletionRequestedEvent shoppingCartDeletionRequestedEvent =
           new ShoppingCartDeletionRequestedEvent(id);
       this.kafkaTemplate.send(DELETE_SHOPPING_CARTS_TOPIC,
-          objectMapper.writeValueAsString(shoppingCartDeletionRequestedEvent));
+          this.objectMapper.writeValueAsString(shoppingCartDeletionRequestedEvent));
       log.info("Sent shopping cart deletion requested event {}",
           shoppingCartDeletionRequestedEvent);
     } catch (JsonProcessingException e) {
       log.error("Error sending shopping cart deletion requested event");
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Send a completed shopping cart event to save it in database.
+   *
+   * @param shoppingCartDto DTO with completed shopping cart info.
+   */
+  @Override
+  public void complete(ShoppingCartDto shoppingCartDto) {
+    try {
+      final ShoppingCartCompletionRequestedEvent shoppingCartCompletionRequestedEvent =
+          this.infraMapper.mapToShoppingCartCompletionRequestedEvent(shoppingCartDto);
+      this.kafkaTemplate.send(COMPLETE_SHOPPING_CARTS_TOPIC,
+          this.objectMapper.writeValueAsString(shoppingCartCompletionRequestedEvent));
+      log.info("Sent shopping cart completion requested event {}",
+          shoppingCartCompletionRequestedEvent);
+    } catch (JsonProcessingException e) {
+      log.error("Error sending shopping cart completion requested event");
       e.printStackTrace();
     }
   }
