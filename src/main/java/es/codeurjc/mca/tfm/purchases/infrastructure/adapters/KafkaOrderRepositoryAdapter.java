@@ -7,6 +7,7 @@ import es.codeurjc.mca.tfm.purchases.domain.ports.out.OrderRepository;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaOrderRepositoryAdapter implements OrderRepository {
 
-  private static final String CREATE_ORDERS_TOPIC = "create-orders";
-
   /**
    * Mapper.
    */
@@ -28,6 +27,12 @@ public class KafkaOrderRepositoryAdapter implements OrderRepository {
    * Kafka template.
    */
   private KafkaTemplate<String, String> kafkaTemplate;
+
+  /**
+   * Kafka create order topic.
+   */
+  @Value("${kafka.topics.createOrder}")
+  private String createOrderTopic;
 
   /**
    * Object mapper.
@@ -57,7 +62,7 @@ public class KafkaOrderRepositoryAdapter implements OrderRepository {
     try {
       OrderCreationRequestedEvent orderCreationRequestedEvent =
           this.infraMapper.mapToOrderCreationRequestedEvent(orderDto);
-      this.kafkaTemplate.send(CREATE_ORDERS_TOPIC,
+      this.kafkaTemplate.send(this.createOrderTopic,
           this.objectMapper.writeValueAsString(orderCreationRequestedEvent));
       log.info("Sent order creation requested event {}",
           orderCreationRequestedEvent);

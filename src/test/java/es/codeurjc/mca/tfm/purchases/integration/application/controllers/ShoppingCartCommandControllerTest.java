@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,6 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @DisplayName("ShoppingCartCommandController integration tests")
 public class ShoppingCartCommandControllerTest extends AuthenticatedBaseController {
-
-  private static final String VALIDATE_ITEMS_TOPIC = "validate-items";
 
   private static final Integer PRODUCT_ID = 1;
 
@@ -44,6 +43,9 @@ public class ShoppingCartCommandControllerTest extends AuthenticatedBaseControll
 
   @SpyBean
   private KafkaTemplate<String, String> kafkaTemplate;
+
+  @Value("${kafka.topics.validateItems}")
+  private String validateItemsTopic;
 
   @Test
   @DisplayName("Test shopping cart creation successfully")
@@ -310,7 +312,7 @@ public class ShoppingCartCommandControllerTest extends AuthenticatedBaseControll
         .getResponseBody();
 
     assertTrue(shoppingCartResponseDto.isCompleted());
-    verify(this.kafkaTemplate, times(1)).send(eq(VALIDATE_ITEMS_TOPIC),
+    verify(this.kafkaTemplate, times(1)).send(eq(this.validateItemsTopic),
         any(String.class));
 
   }

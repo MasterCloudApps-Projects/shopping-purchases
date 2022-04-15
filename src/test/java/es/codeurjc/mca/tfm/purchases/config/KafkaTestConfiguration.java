@@ -22,25 +22,52 @@ import org.springframework.kafka.core.ProducerFactory;
 @TestConfiguration
 public class KafkaTestConfiguration {
 
-  private static final String GROUP_ID = "purchases-group";
-
-  private static final String CREATE_SHOPPING_CARTS_TOPIC = "create-shopping-carts";
-
-  private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
-
-  private static final String COMPLETE_SHOPPING_CARTS_TOPIC = "complete-shopping-carts";
-
-  private static final String CREATE_ORDERS_TOPIC = "create-orders";
-
-  private static final String VALIDATE_ITEMS_TOPIC = "validate-items";
-
   /**
    * Kafka bootstrap server address.
    */
   @Value(value = "${kafka.bootstrapAddress}")
   private String bootstrapAddress;
 
-  @Value("${kafka.topics.set-item}")
+  /**
+   * Kafka group identifier.
+   */
+  @Value(value = "${kafka.groupId}")
+  private String groupId;
+
+  /**
+   * Kafka create shopping cart topic.
+   */
+  @Value("${kafka.topics.createShoppingCart}")
+  private String createShoppingCartTopic;
+
+  /**
+   * Kafka delete shopping cart topic.
+   */
+  @Value("${kafka.topics.deleteShoppingCart}")
+  private String deleteShoppingCartTopic;
+
+  /**
+   * Kafka complete shopping cart topic.
+   */
+  @Value("${kafka.topics.completeShoppingCart}")
+  private String completeShoppingCartTopic;
+
+  /**
+   * Kafka create order topic.
+   */
+  @Value("${kafka.topics.createOrder}")
+  private String createOrderTopic;
+
+  /**
+   * Kafka validate items topic.
+   */
+  @Value("${kafka.topics.validateItems}")
+  private String validateItemsTopic;
+
+  /**
+   * Kafka set item to shopping cart topic.
+   */
+  @Value("${kafka.topics.setItem}")
   private String setItemsTopic;
 
   @Bean
@@ -57,7 +84,7 @@ public class KafkaTestConfiguration {
    */
   @Bean
   public NewTopic createShoppingCartsTopic() {
-    return new NewTopic(CREATE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.createShoppingCartTopic, 1, (short) 1);
   }
 
   /**
@@ -67,7 +94,7 @@ public class KafkaTestConfiguration {
    */
   @Bean
   public NewTopic deleteShoppingCartsTopic() {
-    return new NewTopic(DELETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.deleteShoppingCartTopic, 1, (short) 1);
   }
 
   /**
@@ -77,7 +104,7 @@ public class KafkaTestConfiguration {
    */
   @Bean
   public NewTopic completeShoppingCartsTopic() {
-    return new NewTopic(COMPLETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.completeShoppingCartTopic, 1, (short) 1);
   }
 
   /**
@@ -87,7 +114,7 @@ public class KafkaTestConfiguration {
    */
   @Bean
   public NewTopic createOrdersTopic() {
-    return new NewTopic(CREATE_ORDERS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.createOrderTopic, 1, (short) 1);
   }
 
   /**
@@ -97,7 +124,7 @@ public class KafkaTestConfiguration {
    */
   @Bean
   public NewTopic validateOrderItemsTopic() {
-    return new NewTopic(VALIDATE_ITEMS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.validateItemsTopic, 1, (short) 1);
   }
 
   /**
@@ -127,7 +154,7 @@ public class KafkaTestConfiguration {
     Map<String, Object> props = new HashMap<>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, this.bootstrapAddress);
     props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-    props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
+    props.put(ConsumerConfig.GROUP_ID_CONFIG, this.groupId);
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     return props;

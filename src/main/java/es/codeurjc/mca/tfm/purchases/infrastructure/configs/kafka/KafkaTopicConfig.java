@@ -17,23 +17,46 @@ import org.springframework.kafka.core.KafkaAdmin;
 @Profile("!test")
 public class KafkaTopicConfig {
 
-  private static final String CREATE_SHOPPING_CARTS_TOPIC = "create-shopping-carts";
-
-  private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
-
-  private static final String COMPLETE_SHOPPING_CARTS_TOPIC = "complete-shopping-carts";
-
-  private static final String CREATE_ORDERS_TOPIC = "create-orders";
-
-  private static final String VALIDATE_ITEMS_TOPIC = "validate-items";
-
   /**
    * Kafka bootstrap server address.
    */
   @Value(value = "${kafka.bootstrapAddress}")
   private String bootstrapAddress;
 
-  @Value("${kafka.topics.set-item}")
+  /**
+   * Kafka create shopping cart topic.
+   */
+  @Value("${kafka.topics.createShoppingCart}")
+  private String createShoppingCartTopic;
+
+  /**
+   * Kafka delete shopping cart topic.
+   */
+  @Value("${kafka.topics.deleteShoppingCart}")
+  private String deleteShoppingCartTopic;
+
+  /**
+   * Kafka complete shopping cart topic.
+   */
+  @Value("${kafka.topics.completeShoppingCart}")
+  private String completeShoppingCartTopic;
+
+  /**
+   * Kafka create order topic.
+   */
+  @Value("${kafka.topics.createOrder}")
+  private String createOrderTopic;
+
+  /**
+   * Kafka validate items topic.
+   */
+  @Value("${kafka.topics.validateItems}")
+  private String validateItemsTopic;
+
+  /**
+   * Kafka set item to shopping cart topic.
+   */
+  @Value("${kafka.topics.setItem}")
   private String setItemsTopic;
 
   /**
@@ -55,7 +78,7 @@ public class KafkaTopicConfig {
    */
   @Bean
   public NewTopic createShoppingCartsTopic() {
-    return new NewTopic(CREATE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.createShoppingCartTopic, 1, (short) 1);
   }
 
   /**
@@ -65,7 +88,7 @@ public class KafkaTopicConfig {
    */
   @Bean
   public NewTopic deleteShoppingCartsTopic() {
-    return new NewTopic(DELETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.deleteShoppingCartTopic, 1, (short) 1);
   }
 
   /**
@@ -75,7 +98,7 @@ public class KafkaTopicConfig {
    */
   @Bean
   public NewTopic completeShoppingCartsTopic() {
-    return new NewTopic(COMPLETE_SHOPPING_CARTS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.completeShoppingCartTopic, 1, (short) 1);
   }
 
   /**
@@ -85,7 +108,7 @@ public class KafkaTopicConfig {
    */
   @Bean
   public NewTopic createOrdersTopic() {
-    return new NewTopic(CREATE_ORDERS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.createOrderTopic, 1, (short) 1);
   }
 
   /**
@@ -95,7 +118,7 @@ public class KafkaTopicConfig {
    */
   @Bean
   public NewTopic validateOrderItemsTopic() {
-    return new NewTopic(VALIDATE_ITEMS_TOPIC, 1, (short) 1);
+    return new NewTopic(this.validateItemsTopic, 1, (short) 1);
   }
 
   /**
@@ -107,6 +130,5 @@ public class KafkaTopicConfig {
   public NewTopic setItemToShoppingCartTopic() {
     return new NewTopic(this.setItemsTopic, 1, (short) 1);
   }
-
 
 }

@@ -20,12 +20,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ShoppingCartEventsListener {
 
-  private static final String CREATE_SHOPPING_CARTS_TOPIC = "create-shopping-carts";
-
-  private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
-
-  private static final String COMPLETE_SHOPPING_CARTS_TOPIC = "complete-shopping-carts";
-
   /**
    * Mapper.
    */
@@ -67,7 +61,7 @@ public class ShoppingCartEventsListener {
    *
    * @param shoppingCartCreationRequestedEvent with shopping cart to save info.
    */
-  @KafkaListener(topics = CREATE_SHOPPING_CARTS_TOPIC)
+  @KafkaListener(topics = "${kafka.topics.createShoppingCart}")
   public void onCreatedShoppingCart(String shoppingCartCreationRequestedEvent) throws Exception {
     try {
       log.info("Received shoppingCartCreationRequestedEvent {}",
@@ -89,7 +83,7 @@ public class ShoppingCartEventsListener {
    *
    * @param shoppingCartDeletionRequestedEvent with shopping cart to delete id.
    */
-  @KafkaListener(topics = DELETE_SHOPPING_CARTS_TOPIC)
+  @KafkaListener(topics = "${kafka.topics.deleteShoppingCart}")
   public void onDeletedShoppingCart(String shoppingCartDeletionRequestedEvent) throws Exception {
     try {
       log.info("Received shoppingCartDeletionRequestedEvent {}",
@@ -111,7 +105,7 @@ public class ShoppingCartEventsListener {
    *
    * @param shoppingCartCompletionRequestedEvent with completed shopping cart to save info.
    */
-  @KafkaListener(topics = COMPLETE_SHOPPING_CARTS_TOPIC)
+  @KafkaListener(topics = "${kafka.topics.completeShoppingCart}")
   public void onCompletedShoppingCart(String shoppingCartCompletionRequestedEvent)
       throws Exception {
     try {
@@ -149,7 +143,7 @@ public class ShoppingCartEventsListener {
    *
    * @param setItemToShoppingCartRequestedEvent with info to save items in shopping cart.
    */
-  @KafkaListener(topics = "${kafka.topics.set-item}")
+  @KafkaListener(topics = "${kafka.topics.setItem}")
   public void onSetItemToShoppingCart(String setItemToShoppingCartRequestedEvent)
       throws Exception {
     try {

@@ -22,13 +22,17 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Profile("!test")
 public class KafkaConsumerConfig {
 
-  private static final String GROUP_ID = "purchases-group";
-
   /**
    * Kafka bootstrap server address.
    */
   @Value(value = "${kafka.bootstrapAddress}")
   private String bootstrapAddress;
+
+  /**
+   * Kafka group identifier.
+   */
+  @Value(value = "${kafka.groupId}")
+  private String groupId;
 
   /**
    * Kafka consumer factory bean.
@@ -43,7 +47,7 @@ public class KafkaConsumerConfig {
         bootstrapAddress);
     props.put(
         ConsumerConfig.GROUP_ID_CONFIG,
-        GROUP_ID);
+        this.groupId);
     props.put(
         ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
         StringDeserializer.class);

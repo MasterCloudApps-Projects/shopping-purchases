@@ -11,8 +11,14 @@ server:
 
 kafka:
   bootstrapAddress: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+  groupId: purchases-group
   topics:
-    set-item: set-items
+    createShoppingCart: create-shopping-carts
+    deleteShoppingCart: delete-shopping-carts
+    completeShoppingCart: complete-shopping-carts
+    createOrder: create-orders
+    validateItems: validate-items
+    setItem: set-items
 
 spring:
   datasource:

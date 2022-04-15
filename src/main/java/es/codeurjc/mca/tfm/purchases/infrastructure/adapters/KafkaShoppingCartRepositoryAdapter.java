@@ -23,12 +23,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepository {
 
-  private static final String CREATE_SHOPPING_CARTS_TOPIC = "create-shopping-carts";
-
-  private static final String DELETE_SHOPPING_CARTS_TOPIC = "delete-shopping-carts";
-
-  private static final String COMPLETE_SHOPPING_CARTS_TOPIC = "complete-shopping-carts";
-
   /**
    * Mapper.
    */
@@ -44,7 +38,28 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
    */
   private JpaShoppingCartRepository jpaShoppingCartRepository;
 
-  @Value("${kafka.topics.set-item}")
+  /**
+   * Kafka create shopping cart topic.
+   */
+  @Value("${kafka.topics.createShoppingCart}")
+  private String createShoppingCartTopic;
+
+  /**
+   * Kafka delete shopping cart topic.
+   */
+  @Value("${kafka.topics.deleteShoppingCart}")
+  private String deleteShoppingCartTopic;
+
+  /**
+   * Kafka complete shopping cart topic.
+   */
+  @Value("${kafka.topics.completeShoppingCart}")
+  private String completeShoppingCartTopic;
+
+  /**
+   * Kafka set item to shopping cart topic.
+   */
+  @Value("${kafka.topics.setItem}")
   private String setItemsTopic;
 
   /**
@@ -77,7 +92,7 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
     try {
       ShoppingCartCreationRequestedEvent shoppingCartCreationRequestedEvent =
           this.infraMapper.mapToShoppingCartCreationRequestedEvent(shoppingCartDto);
-      this.kafkaTemplate.send(CREATE_SHOPPING_CARTS_TOPIC,
+      this.kafkaTemplate.send(this.createShoppingCartTopic,
           this.objectMapper.writeValueAsString(shoppingCartCreationRequestedEvent));
       log.info("Sent shopping cart creation requested event {}",
           shoppingCartCreationRequestedEvent);
@@ -122,7 +137,7 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
     try {
       ShoppingCartDeletionRequestedEvent shoppingCartDeletionRequestedEvent =
           new ShoppingCartDeletionRequestedEvent(id);
-      this.kafkaTemplate.send(DELETE_SHOPPING_CARTS_TOPIC,
+      this.kafkaTemplate.send(this.deleteShoppingCartTopic,
           this.objectMapper.writeValueAsString(shoppingCartDeletionRequestedEvent));
       log.info("Sent shopping cart deletion requested event {}",
           shoppingCartDeletionRequestedEvent);
@@ -142,7 +157,7 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
     try {
       final ShoppingCartCompletionRequestedEvent shoppingCartCompletionRequestedEvent =
           this.infraMapper.mapToShoppingCartCompletionRequestedEvent(shoppingCartDto);
-      this.kafkaTemplate.send(COMPLETE_SHOPPING_CARTS_TOPIC,
+      this.kafkaTemplate.send(this.completeShoppingCartTopic,
           this.objectMapper.writeValueAsString(shoppingCartCompletionRequestedEvent));
       log.info("Sent shopping cart completion requested event {}",
           shoppingCartCompletionRequestedEvent);
