@@ -51,7 +51,7 @@ The next requirements are necessary to work with this project:
 * spring-data-jpa
 * jsonwebtoken
 * spring-boot-starter-validation
-* hibernate-types-5 2.16.0
+* hibernate-types-55 2.16.0
 [//]: # (* flyway)
 
 ### Development dependencies

@@ -26,7 +26,7 @@
 		<testcontainers.version>1.16.3</testcontainers.version>
 		<netty-all.version>4.1.74.Final</netty-all.version>
 		<jackson-databind.version>2.13.2.2</jackson-databind.version>
-		<hibernate-types-5.version>2.16.0</hibernate-types-5.version>
+		<hibernate-types-55.version>2.16.0</hibernate-types-55.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -92,8 +92,8 @@
 
 		<dependency>
 			<groupId>com.vladmihalcea</groupId>
-			<artifactId>hibernate-types-5</artifactId>
-			<version>${hibernate-types-5.version}</version>
+			<artifactId>hibernate-types-55</artifactId>
+			<version>${hibernate-types-55.version}</version>
 		</dependency>
 
 		<dependency>
