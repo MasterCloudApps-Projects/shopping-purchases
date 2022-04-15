@@ -5,7 +5,7 @@ import java.time.Duration;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
-public class TestContainersBase {
+public abstract class TestContainersBase {
 
   protected static final String MYSQL_SERVICE_NAME = "mysql_1";
 
