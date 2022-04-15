@@ -2,6 +2,7 @@ package es.codeurjc.mca.tfm.purchases.domain.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Shopping cart domain entity.
@@ -126,6 +127,29 @@ public class ShoppingCart {
    */
   public void complete() {
     this.completed = true;
+  }
+
+  /**
+   * Set item into shopping cart.
+   *
+   * @param productId product identifier.
+   * @param unitPrice item unit price.
+   * @param quantity  item quantity.
+   * @return true if item can be set, else false.
+   */
+  public boolean setItem(Integer productId, Double unitPrice, Integer quantity) {
+    if (unitPrice > 0 && quantity > 0) {
+      Optional<Item> itemOptional = this.items.stream()
+          .filter(item -> productId.equals(item.getProductId()))
+          .findAny();
+      itemOptional.ifPresentOrElse(
+          item -> item.update(unitPrice, quantity),
+          () -> this.items.add(new Item(productId, unitPrice, quantity))
+      );
+      this.totalPrice = this.items.stream().map(Item::getTotalPrice).reduce(0.0, Double::sum);
+      return true;
+    }
+    return false;
   }
 
 }

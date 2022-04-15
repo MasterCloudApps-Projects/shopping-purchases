@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import es.codeurjc.mca.tfm.purchases.application.dtos.ShoppingCartResponseDto;
+import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ShoppingCartResponseDto;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

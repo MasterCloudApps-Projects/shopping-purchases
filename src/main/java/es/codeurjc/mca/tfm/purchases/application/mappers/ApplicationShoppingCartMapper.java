@@ -1,6 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.application.mappers;
 
-import es.codeurjc.mca.tfm.purchases.application.dtos.ShoppingCartResponseDto;
+import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ShoppingCartResponseDto;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import org.mapstruct.Mapper;
 

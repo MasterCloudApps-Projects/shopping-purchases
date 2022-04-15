@@ -3,6 +3,7 @@ package es.codeurjc.mca.tfm.purchases.domain.usecases;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IllegalShoppingCartStateException;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IncompleteShoppingCartAlreadyExistsException;
+import es.codeurjc.mca.tfm.purchases.domain.exceptions.InvalidItemException;
 import es.codeurjc.mca.tfm.purchases.domain.mappers.DomainMapper;
 import es.codeurjc.mca.tfm.purchases.domain.models.ShoppingCart;
 import es.codeurjc.mca.tfm.purchases.domain.ports.in.ShoppingCartUseCase;
@@ -99,6 +100,37 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
       shoppingCart.complete();
       ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
       this.shoppingCartRepository.complete(shoppingCartDto);
+      shoppingCartDtoOptional = Optional.of(shoppingCartDto);
+    }
+    return shoppingCartDtoOptional;
+  }
+
+  /**
+   * Set item into shopping cart with passed id and user.
+   *
+   * @param id        shopping cart identifier.
+   * @param userId    user identifier.
+   * @param productId product identifier.
+   * @param unitPrice item unit price.
+   * @param quantity  item quantity.
+   * @return an optional of shopping cart DTO with item set.
+   */
+  @Override
+  public Optional<ShoppingCartDto> setItem(Long id, Integer userId, Integer productId,
+      Double unitPrice, Integer quantity) {
+    Optional<ShoppingCartDto> shoppingCartDtoOptional = this.shoppingCartRepository.getByIdAndUser(
+        id, userId);
+    if (shoppingCartDtoOptional.isPresent()) {
+      ShoppingCart shoppingCart = DomainMapper.map(shoppingCartDtoOptional.get());
+      if (shoppingCart.isCompleted()) {
+        throw new IllegalShoppingCartStateException("Can't set item to completed cart");
+      }
+      if (!shoppingCart.setItem(productId, unitPrice, quantity)) {
+        throw new InvalidItemException(
+            "Can't set item, check item unit price and quantity to be greater than 0");
+      }
+      ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
+      this.shoppingCartRepository.setItem(shoppingCartDto);
       shoppingCartDtoOptional = Optional.of(shoppingCartDto);
     }
     return shoppingCartDtoOptional;

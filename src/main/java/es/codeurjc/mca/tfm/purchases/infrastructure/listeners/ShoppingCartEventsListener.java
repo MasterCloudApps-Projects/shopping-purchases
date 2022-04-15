@@ -3,6 +3,8 @@ package es.codeurjc.mca.tfm.purchases.infrastructure.listeners;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.codeurjc.mca.tfm.purchases.domain.ports.in.OrderUseCase;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.SetItemToShoppingCartRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartDeletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraMapper;
@@ -115,16 +117,62 @@ public class ShoppingCartEventsListener {
     try {
       log.info("Received shoppingCartCompletionRequestedEvent {}",
           shoppingCartCompletionRequestedEvent);
-      ShoppingCartEntity shoppingCartEntity = this.mapper.map(
-          this.objectMapper.readValue(shoppingCartCompletionRequestedEvent,
-              ShoppingCartCreationRequestedEvent.class));
-      this.jpaShoppingCartRepository.save(shoppingCartEntity);
-      log.info("Shopping cart {} saved", shoppingCartEntity);
+      ShoppingCartCompletionRequestedEvent completionRequestedEvent = this.objectMapper.readValue(
+          shoppingCartCompletionRequestedEvent, ShoppingCartCompletionRequestedEvent.class);
+      this.jpaShoppingCartRepository.findById(completionRequestedEvent.getId()).ifPresentOrElse(
+          shoppingCartEntity -> {
+            if (shoppingCartEntity.getTotalPrice().compareTo(
+                completionRequestedEvent.getTotalPrice()) != 0) {
+              log.error(
+                  "Shopping cart total price is different of passed price. "
+                      + "Please check and try again");
+            } else {
+              shoppingCartEntity.setCompleted(true);
+              this.jpaShoppingCartRepository.save(shoppingCartEntity);
+              log.info("Shopping cart {} saved", shoppingCartEntity);
 
-      this.orderUseCase.create(this.mapper.map(shoppingCartEntity));
-      log.info("Requested order creation for shopping cart {}", shoppingCartEntity);
+              this.orderUseCase.create(this.mapper.map(shoppingCartEntity));
+              log.info("Requested order creation for shopping cart {}", shoppingCartEntity);
+            }
+          },
+          () -> log.error("Not shopping cart found with id {}", completionRequestedEvent.getId())
+      );
     } catch (Exception e) {
       log.error("Error processing event {}: {}", shoppingCartCompletionRequestedEvent,
+          e.getMessage());
+      throw e;
+    }
+  }
+
+  /**
+   * Listener to process set item to shopping cart events and save them in database.
+   *
+   * @param setItemToShoppingCartRequestedEvent with info to save items in shopping cart.
+   */
+  @KafkaListener(topics = "${kafka.topics.set-item}")
+  public void onSetItemToShoppingCart(String setItemToShoppingCartRequestedEvent)
+      throws Exception {
+    try {
+      log.info("Received shoppingCartCompletionRequestedEvent {}",
+          setItemToShoppingCartRequestedEvent);
+      SetItemToShoppingCartRequestedEvent setItemRequestedEvent = this.objectMapper.readValue(
+          setItemToShoppingCartRequestedEvent, SetItemToShoppingCartRequestedEvent.class);
+      String items = this.mapper.map(setItemRequestedEvent.getItems());
+      this.jpaShoppingCartRepository.findById(setItemRequestedEvent.getId()).ifPresentOrElse(
+          shoppingCartEntity -> {
+            if (shoppingCartEntity.isCompleted()) {
+              log.error("Can't set items on a completed shopping cart.");
+            } else {
+              shoppingCartEntity.setItems(items);
+              shoppingCartEntity.setTotalPrice(setItemRequestedEvent.getTotalPrice());
+              this.jpaShoppingCartRepository.save(shoppingCartEntity);
+              log.info("Shopping cart {} saved", shoppingCartEntity);
+            }
+          },
+          () -> log.error("Not shopping cart found with id {}", setItemRequestedEvent.getId())
+      );
+    } catch (Exception e) {
+      log.error("Error processing event {}: {}", setItemToShoppingCartRequestedEvent,
           e.getMessage());
       throw e;
     }

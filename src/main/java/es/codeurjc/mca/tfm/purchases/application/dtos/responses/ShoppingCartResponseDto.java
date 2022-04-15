@@ -1,7 +1,8 @@
-package es.codeurjc.mca.tfm.purchases.application.dtos;
+package es.codeurjc.mca.tfm.purchases.application.dtos.responses;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
  * Shopping cart response DTO.
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCartResponseDto {

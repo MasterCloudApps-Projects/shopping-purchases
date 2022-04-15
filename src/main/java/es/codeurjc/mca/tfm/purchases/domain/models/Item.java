@@ -28,16 +28,15 @@ public class Item {
   /**
    * All args constructor.
    *
-   * @param productId  product identifier.
-   * @param unitPrice  item unit price.
-   * @param quantity   item quantity.
-   * @param totalPrice items total price.
+   * @param productId product identifier.
+   * @param unitPrice item unit price.
+   * @param quantity  item quantity.
    */
-  public Item(Integer productId, Double unitPrice, Integer quantity, Double totalPrice) {
+  public Item(Integer productId, Double unitPrice, Integer quantity) {
     this.productId = productId;
     this.unitPrice = unitPrice;
     this.quantity = quantity;
-    this.totalPrice = totalPrice;
+    this.totalPrice = unitPrice * quantity;
   }
 
   public Integer getProductId() {
@@ -70,5 +69,17 @@ public class Item {
 
   public void setTotalPrice(Double totalPrice) {
     this.totalPrice = totalPrice;
+  }
+
+  /**
+   * Updates item info.
+   *
+   * @param unitPrice product unit price.
+   * @param quantity  product quantity.
+   */
+  public void update(Double unitPrice, Integer quantity) {
+    this.unitPrice = unitPrice;
+    this.quantity = quantity;
+    this.totalPrice = unitPrice * quantity;
   }
 }

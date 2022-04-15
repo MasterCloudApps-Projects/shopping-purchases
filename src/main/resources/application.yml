@@ -11,6 +11,8 @@ server:
 
 kafka:
   bootstrapAddress: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9092}
+  topics:
+    set-item: set-items
 
 spring:
   datasource:

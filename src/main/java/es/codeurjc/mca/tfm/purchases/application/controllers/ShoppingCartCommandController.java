@@ -2,7 +2,9 @@ package es.codeurjc.mca.tfm.purchases.application.controllers;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
-import es.codeurjc.mca.tfm.purchases.application.dtos.ShoppingCartResponseDto;
+import es.codeurjc.mca.tfm.purchases.application.dtos.requests.SetItemRequest;
+import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ShoppingCartResponseDto;
+import es.codeurjc.mca.tfm.purchases.application.exceptions.BadRequestException;
 import es.codeurjc.mca.tfm.purchases.application.exceptions.ConflictException;
 import es.codeurjc.mca.tfm.purchases.application.exceptions.InternalServerErrorException;
 import es.codeurjc.mca.tfm.purchases.application.exceptions.NotFoundException;
@@ -10,8 +12,10 @@ import es.codeurjc.mca.tfm.purchases.application.mappers.ApplicationShoppingCart
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IllegalShoppingCartStateException;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IncompleteShoppingCartAlreadyExistsException;
+import es.codeurjc.mca.tfm.purchases.domain.exceptions.InvalidItemException;
 import es.codeurjc.mca.tfm.purchases.domain.ports.in.ShoppingCartUseCase;
 import java.net.URI;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -139,6 +144,47 @@ public class ShoppingCartCommandController {
       log.error("Shopping cart with id {} and user {} can't be completed", id,
           userId);
       throw new ConflictException(illegalShoppingCartStateException.getMessage());
+    } catch (NotFoundException notFoundException) {
+      log.error("Shopping cart not found with id and user", id, userId);
+      throw notFoundException;
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      e.printStackTrace();
+      throw new InternalServerErrorException(e.getMessage());
+    }
+  }
+
+  /**
+   * Sets item in shopping cart.
+   *
+   * @param id             shopping cart identifier.
+   * @param productId      product identifier.
+   * @param setItemRequest set item info.
+   * @param authentication authenticated user info.
+   * @return accepted code response.
+   */
+  @PatchMapping("/{id}/products/{productId}")
+  public ResponseEntity<Void> setItemToShoppingCart(
+      @PathVariable(name = "id") Long id, @PathVariable(name = "productId") Integer productId,
+      @Valid @RequestBody SetItemRequest setItemRequest, Authentication authentication) {
+    Integer userId = null;
+    try {
+      userId = Integer.valueOf(authentication.getName());
+      this.shoppingCartUseCase.setItem(
+              id, userId, productId, setItemRequest.getUnitPrice(), setItemRequest.getQuantity())
+          .orElseThrow(
+              () -> new NotFoundException(
+                  "Shopping cart with passed id not found for logged user"));
+
+      return ResponseEntity.accepted().build();
+    } catch (IllegalShoppingCartStateException illegalShoppingCartStateException) {
+      log.error("Shopping cart with id {} and user {} is completed and can't set items on it",
+          id, userId);
+      throw new ConflictException(illegalShoppingCartStateException.getMessage());
+    } catch (InvalidItemException invalidItemException) {
+      log.error("Can't set item with id {} and body {} to shopping cart with id {} and user {}",
+          productId, setItemRequest, id, userId);
+      throw new BadRequestException(invalidItemException.getMessage());
     } catch (NotFoundException notFoundException) {
       log.error("Shopping cart not found with id and user", id, userId);
       throw notFoundException;

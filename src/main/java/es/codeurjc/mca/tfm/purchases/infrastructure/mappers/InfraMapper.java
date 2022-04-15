@@ -10,6 +10,7 @@ import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreatedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderShoppingCart;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.SetItemToShoppingCartRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItem;
@@ -133,5 +134,14 @@ public interface InfraMapper {
    * @return mapped shopping cart entity.
    */
   ShoppingCartEntity mapToShoppingCartEntity(OrderShoppingCart orderShoppingCart);
+
+  /**
+   * Maps shopping cart DTO to set item to shopping cart requested event.
+   *
+   * @param shoppingCartDto shopping cart DTO to map.
+   * @return SetItemToShoppingCartRequestedEvent instance.
+   */
+  SetItemToShoppingCartRequestedEvent mapToSetItemToShoppingCartRequestedEvent(
+      ShoppingCartDto shoppingCartDto);
 
 }

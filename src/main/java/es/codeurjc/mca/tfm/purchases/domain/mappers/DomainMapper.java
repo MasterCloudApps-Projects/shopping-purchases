@@ -32,7 +32,7 @@ public class DomainMapper {
   public static ShoppingCart map(ShoppingCartDto shoppingCartDto) {
     List<Item> items = shoppingCartDto.getItems().stream()
         .map(itemDto -> new Item(itemDto.getProductId(), itemDto.getUnitPrice(),
-            itemDto.getQuantity(), itemDto.getTotalPrice()))
+            itemDto.getQuantity()))
         .collect(Collectors.toList());
     return new ShoppingCart(shoppingCartDto.getId(), shoppingCartDto.getUserId(),
         shoppingCartDto.isCompleted(), items, shoppingCartDto.getTotalPrice());

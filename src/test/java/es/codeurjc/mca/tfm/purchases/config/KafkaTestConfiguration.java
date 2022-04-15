@@ -40,6 +40,9 @@ public class KafkaTestConfiguration {
   @Value(value = "${kafka.bootstrapAddress}")
   private String bootstrapAddress;
 
+  @Value("${kafka.topics.set-item}")
+  private String setItemsTopic;
+
   @Bean
   public KafkaAdmin kafkaAdmin() {
     Map<String, Object> configs = new HashMap<>();
@@ -95,6 +98,16 @@ public class KafkaTestConfiguration {
   @Bean
   public NewTopic validateOrderItemsTopic() {
     return new NewTopic(VALIDATE_ITEMS_TOPIC, 1, (short) 1);
+  }
+
+  /**
+   * Set item to shopping cart topic bean.
+   *
+   * @return NewTopic instance for set item to shopping cart topic.
+   */
+  @Bean
+  public NewTopic setItemToShoppingCartTopic() {
+    return new NewTopic(this.setItemsTopic, 1, (short) 1);
   }
 
   @Bean

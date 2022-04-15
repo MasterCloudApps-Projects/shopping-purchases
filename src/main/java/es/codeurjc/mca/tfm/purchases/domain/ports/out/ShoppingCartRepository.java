@@ -46,4 +46,11 @@ public interface ShoppingCartRepository {
    */
   void complete(ShoppingCartDto shoppingCartDto);
 
+  /**
+   * Set an item to a shopping cart.
+   *
+   * @param shoppingCartDto DTO with shopping cart with item set.
+   */
+  void setItem(ShoppingCartDto shoppingCartDto);
+
 }

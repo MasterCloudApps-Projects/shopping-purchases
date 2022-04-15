@@ -43,4 +43,17 @@ public interface ShoppingCartUseCase {
    */
   Optional<ShoppingCartDto> complete(Long id, Integer userId);
 
+  /**
+   * Set item into shopping cart with passed id and user.
+   *
+   * @param id        shopping cart identifier.
+   * @param userId    user identifier.
+   * @param productId product identifier.
+   * @param unitPrice item unit price.
+   * @param quantity  item quantity.
+   * @return an optional of shopping cart DTO with item set.
+   */
+  Optional<ShoppingCartDto> setItem(Long id, Integer userId, Integer productId, Double unitPrice,
+      Integer quantity);
+
 }

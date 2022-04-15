@@ -50,7 +50,7 @@ The next requirements are necessary to work with this project:
 * kafka
 * spring-data-jpa
 * jsonwebtoken
-
+* spring-boot-starter-validation
 [//]: # (* flyway)
 
 ### Development dependencies

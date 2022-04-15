@@ -1,6 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.application.controllers;
 
-import es.codeurjc.mca.tfm.purchases.application.dtos.ShoppingCartResponseDto;
+import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ShoppingCartResponseDto;
 import es.codeurjc.mca.tfm.purchases.application.exceptions.InternalServerErrorException;
 import es.codeurjc.mca.tfm.purchases.application.exceptions.NotFoundException;
 import es.codeurjc.mca.tfm.purchases.application.mappers.ApplicationShoppingCartMapper;

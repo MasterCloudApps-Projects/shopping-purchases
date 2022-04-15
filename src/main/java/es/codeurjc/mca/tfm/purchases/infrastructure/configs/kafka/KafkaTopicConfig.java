@@ -33,6 +33,9 @@ public class KafkaTopicConfig {
   @Value(value = "${kafka.bootstrapAddress}")
   private String bootstrapAddress;
 
+  @Value("${kafka.topics.set-item}")
+  private String setItemsTopic;
+
   /**
    * KafkaAdmin Spring bean, which will automatically add topics for all beans of type NewTopic.
    *
@@ -94,5 +97,16 @@ public class KafkaTopicConfig {
   public NewTopic validateOrderItemsTopic() {
     return new NewTopic(VALIDATE_ITEMS_TOPIC, 1, (short) 1);
   }
+
+  /**
+   * Set item to shopping cart topic bean.
+   *
+   * @return NewTopic instance for set item to shopping cart topic.
+   */
+  @Bean
+  public NewTopic setItemToShoppingCartTopic() {
+    return new NewTopic(this.setItemsTopic, 1, (short) 1);
+  }
+
 
 }

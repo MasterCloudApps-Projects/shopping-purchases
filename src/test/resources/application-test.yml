@@ -11,6 +11,8 @@ server:
 
 kafka:
   bootstrapAddress: 127.0.0.1:9092
+  topics:
+    set-item: set-items
 
 spring:
   datasource:
@@ -20,5 +22,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
