@@ -45,8 +45,8 @@ public class ShoppingCartEntity {
    * List of items of the shopping cart.
    */
   @NotBlank
-  @Type( type = "json" )
-  @Column( columnDefinition = "json" )
+  @Type(type = "json")
+  @Column(columnDefinition = "json")
   private String items;
 
   /**
