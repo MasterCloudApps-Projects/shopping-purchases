@@ -41,7 +41,7 @@ public class ShoppingCartQueryControllerTest extends AuthenticatedBaseController
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
     assertNotNull(shoppingCartId);
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     ShoppingCartResponseDto shoppingCartResponseDto = this.webClient
         .get()
@@ -121,7 +121,7 @@ public class ShoppingCartQueryControllerTest extends AuthenticatedBaseController
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
     assertNotNull(shoppingCartId);
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .get()

@@ -38,7 +38,7 @@ public class DeleteShoppingCartCommandControllerTest extends ShoppingCartCommand
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
     assertNotNull(shoppingCartId);
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .get()
@@ -56,7 +56,7 @@ public class DeleteShoppingCartCommandControllerTest extends ShoppingCartCommand
         .expectStatus()
         .isAccepted();
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .get()

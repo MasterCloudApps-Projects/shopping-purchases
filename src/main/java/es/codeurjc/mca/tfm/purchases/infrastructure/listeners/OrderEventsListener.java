@@ -68,7 +68,7 @@ public class OrderEventsListener {
    * @param orderCreationRequestedEvent with shopping cart to save info.
    */
   @Transactional
-  @KafkaListener(topics = "${kafka.topics.createOrder}")
+  @KafkaListener(topics = "${kafka.topics.createOrder}", groupId = "${kafka.groupId}")
   public void onCreatedShoppingCart(String orderCreationRequestedEvent) throws Exception {
     try {
       log.info("Received orderCreationRequestedEvent {}",

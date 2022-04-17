@@ -61,7 +61,7 @@ public class ShoppingCartEventsListener {
    *
    * @param shoppingCartCreationRequestedEvent with shopping cart to save info.
    */
-  @KafkaListener(topics = "${kafka.topics.createShoppingCart}")
+  @KafkaListener(topics = "${kafka.topics.createShoppingCart}", groupId = "${kafka.groupId}")
   public void onCreatedShoppingCart(String shoppingCartCreationRequestedEvent) throws Exception {
     try {
       log.info("Received shoppingCartCreationRequestedEvent {}",
@@ -83,7 +83,7 @@ public class ShoppingCartEventsListener {
    *
    * @param shoppingCartDeletionRequestedEvent with shopping cart to delete id.
    */
-  @KafkaListener(topics = "${kafka.topics.deleteShoppingCart}")
+  @KafkaListener(topics = "${kafka.topics.deleteShoppingCart}", groupId = "${kafka.groupId}")
   public void onDeletedShoppingCart(String shoppingCartDeletionRequestedEvent) throws Exception {
     try {
       log.info("Received shoppingCartDeletionRequestedEvent {}",
@@ -105,7 +105,7 @@ public class ShoppingCartEventsListener {
    *
    * @param shoppingCartCompletionRequestedEvent with completed shopping cart to save info.
    */
-  @KafkaListener(topics = "${kafka.topics.completeShoppingCart}")
+  @KafkaListener(topics = "${kafka.topics.completeShoppingCart}", groupId = "${kafka.groupId}")
   public void onCompletedShoppingCart(String shoppingCartCompletionRequestedEvent)
       throws Exception {
     try {
@@ -143,7 +143,7 @@ public class ShoppingCartEventsListener {
    *
    * @param setItemToShoppingCartRequestedEvent with info to save items in shopping cart.
    */
-  @KafkaListener(topics = "${kafka.topics.setItem}")
+  @KafkaListener(topics = "${kafka.topics.setItem}", groupId = "${kafka.groupId}")
   public void onSetItemToShoppingCart(String setItemToShoppingCartRequestedEvent)
       throws Exception {
     try {

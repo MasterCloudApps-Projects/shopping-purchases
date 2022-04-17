@@ -36,7 +36,7 @@ public class CreateShoppingCartCommandControllerTest extends ShoppingCartCommand
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
     assertNotNull(shoppingCartId);
 
-    verify(this.jpaShoppingCartRepository, timeout(KAFKA_TIMEOUT).times(1)).save(
+    verify(this.jpaShoppingCartRepository, timeout(WAIT_TIME).times(1)).save(
         buildShoppingCart(shoppingCartId));
 
   }
@@ -80,7 +80,7 @@ public class CreateShoppingCartCommandControllerTest extends ShoppingCartCommand
         .expectStatus()
         .isAccepted();
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .post()

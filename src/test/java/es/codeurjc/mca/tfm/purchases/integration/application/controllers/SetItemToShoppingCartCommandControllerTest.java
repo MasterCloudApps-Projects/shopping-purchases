@@ -49,7 +49,7 @@ public class SetItemToShoppingCartCommandControllerTest extends ShoppingCartComm
     String[] locationUrlParts = headers.get(LOCATION_HEADER).get(0).split("/");
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .patch()
@@ -61,7 +61,7 @@ public class SetItemToShoppingCartCommandControllerTest extends ShoppingCartComm
         .expectStatus()
         .isAccepted();
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     ShoppingCartResponseDto shoppingCartResponseDto = this.webClient
         .get()
@@ -123,7 +123,7 @@ public class SetItemToShoppingCartCommandControllerTest extends ShoppingCartComm
     String[] locationUrlParts = headers.get(LOCATION_HEADER).get(0).split("/");
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .patch()
@@ -190,7 +190,7 @@ public class SetItemToShoppingCartCommandControllerTest extends ShoppingCartComm
     String[] locationUrlParts = headers.get(LOCATION_HEADER).get(0).split("/");
     Long shoppingCartId = Long.valueOf(locationUrlParts[locationUrlParts.length - 1]);
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .patch()
@@ -202,7 +202,7 @@ public class SetItemToShoppingCartCommandControllerTest extends ShoppingCartComm
         .expectStatus()
         .isAccepted();
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .patch()
@@ -212,7 +212,7 @@ public class SetItemToShoppingCartCommandControllerTest extends ShoppingCartComm
         .expectStatus()
         .isAccepted();
 
-    Thread.sleep(KAFKA_TIMEOUT);
+    Thread.sleep(WAIT_TIME);
 
     this.webClient
         .patch()

@@ -1,5 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.integration.application.controllers;
 
+import es.codeurjc.mca.tfm.purchases.PurchasesApplication;
 import es.codeurjc.mca.tfm.purchases.config.KafkaTestConfiguration;
 import es.codeurjc.mca.tfm.purchases.testcontainers.TestContainersBase;
 import io.jsonwebtoken.Jwts;
@@ -15,21 +16,30 @@ import java.util.Map;
 import javax.net.ssl.SSLException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
+import org.springframework.kafka.listener.MessageListenerContainer;
+import org.springframework.kafka.test.utils.ContainerTestUtils;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.netty.http.client.HttpClient;
 
-@SpringBootTest(
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = PurchasesApplication.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(KafkaTestConfiguration.class)
 @ActiveProfiles("test")
 @Tag("IntegrationTest")
+@DirtiesContext
 public abstract class AuthenticatedBaseController extends TestContainersBase {
 
   protected static final long TOKEN_EXPIRATION_IN_MILIS = 300000;
@@ -40,7 +50,7 @@ public abstract class AuthenticatedBaseController extends TestContainersBase {
 
   protected static final String LOCATION_HEADER = "Location";
 
-  protected static final long KAFKA_TIMEOUT = 15000L;
+  protected static final long WAIT_TIME = 2000L;
 
   protected static final Long SHOPPING_CART_ID = 1L;
 
@@ -53,6 +63,9 @@ public abstract class AuthenticatedBaseController extends TestContainersBase {
 
   @LocalServerPort
   protected int port;
+
+  @Autowired
+  private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
 
   @BeforeEach
   public void setup() throws SSLException {
@@ -71,6 +84,13 @@ public abstract class AuthenticatedBaseController extends TestContainersBase {
         .bindToServer(connector)
         .responseTimeout(Duration.ofMillis(60000))
         .build();
+
+    for (MessageListenerContainer messageListenerContainer : kafkaListenerEndpointRegistry
+        .getListenerContainers()) {
+      if (messageListenerContainer.getAssignedPartitions().isEmpty()) {
+        ContainerTestUtils.waitForAssignment(messageListenerContainer, 1);
+      }
+    }
   }
 
   protected String generateValidToken() {

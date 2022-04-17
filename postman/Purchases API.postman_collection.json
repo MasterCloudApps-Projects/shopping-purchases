@@ -16,467 +16,6 @@
 							"name": "products/{product Id}",
 							"item": [
 								{
-									"name": "set Item",
-									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "<Bearer Token>",
-													"type": "string"
-												}
-											]
-										},
-										"method": "PATCH",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											},
-											{
-												"key": "Accept",
-												"value": "application/json"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id",
-												"products",
-												":productId"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart where set item."
-												},
-												{
-													"key": "productId",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the product to set in shopping cart."
-												}
-											]
-										},
-										"description": "Allows set item in shopping cart."
-									},
-									"response": [
-										{
-											"name": "updated shopping cart info.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Accepted",
-											"code": 202,
-											"_postman_previewlanguage": "text",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "text/plain"
-												}
-											],
-											"cookie": [],
-											"body": ""
-										},
-										{
-											"name": "Bad request.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Bad Request",
-											"code": 400,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"error\": \"Bad request.\"\n}"
-										},
-										{
-											"name": "Access token is missing or invalid.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Unauthorized",
-											"code": 401,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"error\": \"Access token is missing or invalid.\"\n}"
-										},
-										{
-											"name": "Logged user doesn't have permission to access the resource.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Forbidden",
-											"code": 403,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"error\": \"You don't have permissions to access this resource.\"\n}"
-										},
-										{
-											"name": "shopping cart not found.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Not Found",
-											"code": 404,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"error\": \"shopping cart not found.\"\n}"
-										},
-										{
-											"name": "Shopping cart is completed, can't be modified.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Conflict",
-											"code": 409,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"error\": \"Shopping cart is completed, can't be modified.\"\n}"
-										},
-										{
-											"name": "Internal error.",
-											"originalRequest": {
-												"method": "PATCH",
-												"header": [
-													{
-														"description": "Added as a part of security scheme: bearer",
-														"key": "Authorization",
-														"value": "Bearer <token>"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
-													"host": [
-														"{{baseUrl}}"
-													],
-													"path": [
-														"shopping-carts",
-														":id",
-														"products",
-														":productId"
-													],
-													"variable": [
-														{
-															"key": "id",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the shopping cart where set item."
-														},
-														{
-															"key": "productId",
-															"value": "1",
-															"description": "(Required) Numeric identifier of the product to set in shopping cart."
-														}
-													]
-												}
-											},
-											"status": "Internal Server Error",
-											"code": 500,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												}
-											],
-											"cookie": [],
-											"body": "{\n  \"error\": \"Internal error.\"\n}"
-										}
-									]
-								},
-								{
 									"name": "delete Item",
 									"request": {
 										"auth": {
@@ -862,335 +401,6 @@
 									]
 								}
 							]
-						},
-						{
-							"name": "complete Shopping Cart",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "<Bearer Token>",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/shopping-carts/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"shopping-carts",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "1",
-											"description": "(Required) Numeric identifier of the shopping cart to complete."
-										}
-									]
-								},
-								"description": "Set shopping cart as completed."
-							},
-							"response": [
-								{
-									"name": "updated shopping cart info.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Accepted",
-									"code": 202,
-									"_postman_previewlanguage": "text",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "text/plain"
-										}
-									],
-									"cookie": [],
-									"body": ""
-								},
-								{
-									"name": "Bad request.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Bad Request",
-									"code": 400,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"error\": \"Bad request.\"\n}"
-								},
-								{
-									"name": "Access token is missing or invalid.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Unauthorized",
-									"code": 401,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"error\": \"Access token is missing or invalid.\"\n}"
-								},
-								{
-									"name": "Logged user doesn't have permission to access the resource.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Forbidden",
-									"code": 403,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"error\": \"You don't have permissions to access this resource.\"\n}"
-								},
-								{
-									"name": "shopping cart not found.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Not Found",
-									"code": 404,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"error\": \"shopping cart not found.\"\n}"
-								},
-								{
-									"name": "Shopping cart is empty, can't be completed.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Conflict",
-									"code": 409,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"error\": \"Shopping cart is empty, can't be completed.\"\n}"
-								},
-								{
-									"name": "Internal error.",
-									"originalRequest": {
-										"method": "PATCH",
-										"header": [
-											{
-												"description": "Added as a part of security scheme: bearer",
-												"key": "Authorization",
-												"value": "Bearer <token>"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/shopping-carts/:id",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"shopping-carts",
-												":id"
-											],
-											"variable": [
-												{
-													"key": "id",
-													"value": "1",
-													"description": "(Required) Numeric identifier of the shopping cart to complete."
-												}
-											]
-										}
-									},
-									"status": "Internal Server Error",
-									"code": 500,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"error\": \"Internal error.\"\n}"
-								}
-							]
 						}
 					]
 				},
@@ -1209,10 +419,11 @@
 									"    pm.response.to.have.header(\"Location\");",
 									"    const locationHeader = pm.response.headers.get(\"Location\");",
 									"    pm.expect(locationHeader.startsWith(pm.environment.get(\"baseUrl\")+'/shopping-carts/')).to.be.true;",
-									"    const shoppingCartId = locationHeader.split(\"/\").pop();",
+									"    const shoppingCartId = Number(locationHeader.split(\"/\").pop());",
 									"    pm.environment.set(\"shoppingCartId\", shoppingCartId);",
 									"});",
-									""
+									"",
+									"setTimeout(function(){}, 2000);"
 								],
 								"type": "text/javascript"
 							}
@@ -1429,6 +640,15 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check shopping cart info\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"shoppingCartId\"));",
+									"    pm.expect(responseJson.userId).to.eql(parseInt(pm.environment.get(\"userId\")));",
+									"    pm.expect(responseJson.completed).to.be.false;",
+									"    pm.expect(responseJson.items.length).to.eql(0);",
+									"    pm.expect(responseJson.totalPrice).to.eql(0.0);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1682,7 +902,9 @@
 								"exec": [
 									"pm.test(\"Status code is 202\", function () {",
 									"    pm.response.to.have.status(202);",
-									"});"
+									"});",
+									"",
+									"setTimeout(function(){}, 2000);"
 								],
 								"type": "text/javascript"
 							}
@@ -1928,6 +1150,1301 @@
 							"name": "Internal error.",
 							"originalRequest": {
 								"method": "DELETE",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to get."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Internal error.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create Shopping Cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Location header is present\", function () {",
+									"    pm.response.to.have.header(\"Location\");",
+									"    const locationHeader = pm.response.headers.get(\"Location\");",
+									"    pm.expect(locationHeader.startsWith(pm.environment.get(\"baseUrl\")+'/shopping-carts/')).to.be.true;",
+									"    const shoppingCartId = Number(locationHeader.split(\"/\").pop());",
+									"    pm.environment.set(\"shoppingCartId\", shoppingCartId);",
+									"});",
+									"",
+									"setTimeout(function(){}, 2000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/shopping-carts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"shopping-carts"
+							]
+						},
+						"description": "Create a new shopping cart."
+					},
+					"response": [
+						{
+							"name": "Shopping cart creation accepted",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts"
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Location",
+									"value": "https://localhost:8446/api/v1/shopping-carts/1",
+									"description": "(Required) URL to get the newly-created shopping cart."
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Access token is missing or invalid.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Access token is missing or invalid.\"\n}"
+						},
+						{
+							"name": "Logged user doesn't have permission to access the resource.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"You don't have permissions to access this resource.\"\n}"
+						},
+						{
+							"name": "User already has an incomplete shopping cart.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"User already has an incomplete shopping cart.\"\n}"
+						},
+						{
+							"name": "Internal error.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Internal error.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "set Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"setTimeout(function(){}, 2000);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/shopping-carts/{{shoppingCartId}}/products/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"shopping-carts",
+								"{{shoppingCartId}}",
+								"products",
+								"1"
+							]
+						},
+						"description": "Allows set item in shopping cart."
+					},
+					"response": [
+						{
+							"name": "updated shopping cart info.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad request.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Bad request.\"\n}"
+						},
+						{
+							"name": "Access token is missing or invalid.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Access token is missing or invalid.\"\n}"
+						},
+						{
+							"name": "Logged user doesn't have permission to access the resource.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"You don't have permissions to access this resource.\"\n}"
+						},
+						{
+							"name": "shopping cart not found.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"shopping cart not found.\"\n}"
+						},
+						{
+							"name": "Shopping cart is completed, can't be modified.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Shopping cart is completed, can't be modified.\"\n}"
+						},
+						{
+							"name": "Internal error.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"unitPrice\": 29.99,\n  \"quantity\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id/products/:productId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id",
+										"products",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart where set item."
+										},
+										{
+											"key": "productId",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the product to set in shopping cart."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Internal error.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "complete Shopping Cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"setTimeout(function(){}, 2000);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/shopping-carts/{{shoppingCartId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"shopping-carts",
+								"{{shoppingCartId}}"
+							]
+						},
+						"description": "Set shopping cart as completed."
+					},
+					"response": [
+						{
+							"name": "updated shopping cart info.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Bad request.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Bad request.\"\n}"
+						},
+						{
+							"name": "Access token is missing or invalid.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Access token is missing or invalid.\"\n}"
+						},
+						{
+							"name": "Logged user doesn't have permission to access the resource.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"You don't have permissions to access this resource.\"\n}"
+						},
+						{
+							"name": "shopping cart not found.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"shopping cart not found.\"\n}"
+						},
+						{
+							"name": "Shopping cart is empty, can't be completed.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Shopping cart is empty, can't be completed.\"\n}"
+						},
+						{
+							"name": "Internal error.",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to complete."
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Internal error.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Shopping Cart By Id Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check completed shopping cart info\", function () {",
+									"    const responseJson = pm.response.json();",
+									"    pm.expect(responseJson.id).to.eql(pm.environment.get(\"shoppingCartId\"));",
+									"    pm.expect(responseJson.userId).to.eql(parseInt(pm.environment.get(\"userId\")));",
+									"    pm.expect(responseJson.completed).to.be.true;",
+									"    pm.expect(responseJson.items.length).to.eql(1);",
+									"    pm.expect(responseJson.items[0].productId).to.eql(1);",
+									"    pm.expect(responseJson.items[0].unitPrice).to.eql(29.99);",
+									"    pm.expect(responseJson.items[0].quantity).to.eql(10);",
+									"    pm.expect(responseJson.items[0].totalPrice).to.eql(299.90);",
+									"    pm.expect(responseJson.totalPrice).to.eql(299.90);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{userToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/shopping-carts/{{shoppingCartId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"shopping-carts",
+								"{{shoppingCartId}}"
+							]
+						},
+						"description": "Get shopping cart info by ID."
+					},
+					"response": [
+						{
+							"name": "shopping cart info.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to get."
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": 1,\n  \"userId\": 1,\n  \"completed\": false,\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"unitPrice\": 29.99,\n      \"quantity\": 10,\n      \"totalPrice\": 299.9\n    },\n    {\n      \"productId\": 1,\n      \"unitPrice\": 29.99,\n      \"quantity\": 10,\n      \"totalPrice\": 299.9\n    }\n  ],\n  \"totalPrice\": 299.9\n}"
+						},
+						{
+							"name": "Access token is missing or invalid.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to get."
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Access token is missing or invalid.\"\n}"
+						},
+						{
+							"name": "Logged user doesn't have permission to access the resource.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to get."
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"You don't have permissions to access this resource.\"\n}"
+						},
+						{
+							"name": "shopping cart not found.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/shopping-carts/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"shopping-carts",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "(Required) Numeric identifier of the shopping cart to get."
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"shopping cart not found.\"\n}"
+						},
+						{
+							"name": "Internal error.",
+							"originalRequest": {
+								"method": "GET",
 								"header": [
 									{
 										"description": "Added as a part of security scheme: bearer",
