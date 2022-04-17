@@ -56,4 +56,14 @@ public interface ShoppingCartUseCase {
   Optional<ShoppingCartDto> setItem(Long id, Integer userId, Integer productId, Double unitPrice,
       Integer quantity);
 
+  /**
+   * Delete item from shopping cart with passed id and user.
+   *
+   * @param id        shopping cart identifier.
+   * @param userId    user identifier.
+   * @param productId product identifier.
+   * @return an optional of shopping cart DTO with item deleted.
+   */
+  Optional<ShoppingCartDto> deleteItem(Long id, Integer userId, Integer productId);
+
 }

@@ -18,7 +18,7 @@ kafka:
     completeShoppingCart: complete-shopping-carts
     createOrder: create-orders
     validateItems: validate-items
-    setItem: set-items
+    updateItems: update-items
 
 spring:
   datasource:

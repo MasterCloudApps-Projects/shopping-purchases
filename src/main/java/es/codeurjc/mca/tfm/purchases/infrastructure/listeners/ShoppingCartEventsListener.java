@@ -3,10 +3,10 @@ package es.codeurjc.mca.tfm.purchases.infrastructure.listeners;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.codeurjc.mca.tfm.purchases.domain.ports.in.OrderUseCase;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
-import es.codeurjc.mca.tfm.purchases.infrastructure.events.SetItemToShoppingCartRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartDeletionRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItemsUpdateRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraMapper;
 import es.codeurjc.mca.tfm.purchases.infrastructure.repositories.JpaShoppingCartRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -139,34 +139,34 @@ public class ShoppingCartEventsListener {
   }
 
   /**
-   * Listener to process set item to shopping cart events and save them in database.
+   * Listener to process shopping cart update items events and save them in database.
    *
-   * @param setItemToShoppingCartRequestedEvent with info to save items in shopping cart.
+   * @param shoppingCartItemsUpdateRequestedEvent with info to save items in shopping cart.
    */
-  @KafkaListener(topics = "${kafka.topics.setItem}", groupId = "${kafka.groupId}")
-  public void onSetItemToShoppingCart(String setItemToShoppingCartRequestedEvent)
+  @KafkaListener(topics = "${kafka.topics.updateItems}", groupId = "${kafka.groupId}")
+  public void onUpdateShoppingCartItems(String shoppingCartItemsUpdateRequestedEvent)
       throws Exception {
     try {
-      log.info("Received shoppingCartCompletionRequestedEvent {}",
-          setItemToShoppingCartRequestedEvent);
-      SetItemToShoppingCartRequestedEvent setItemRequestedEvent = this.objectMapper.readValue(
-          setItemToShoppingCartRequestedEvent, SetItemToShoppingCartRequestedEvent.class);
-      String items = this.mapper.map(setItemRequestedEvent.getItems());
-      this.jpaShoppingCartRepository.findById(setItemRequestedEvent.getId()).ifPresentOrElse(
+      log.info("Received shoppingCartItemsUpdateRequestedEvent {}",
+          shoppingCartItemsUpdateRequestedEvent);
+      ShoppingCartItemsUpdateRequestedEvent itemsUpdateRequestedEvent = this.objectMapper.readValue(
+          shoppingCartItemsUpdateRequestedEvent, ShoppingCartItemsUpdateRequestedEvent.class);
+      String items = this.mapper.map(itemsUpdateRequestedEvent.getItems());
+      this.jpaShoppingCartRepository.findById(itemsUpdateRequestedEvent.getId()).ifPresentOrElse(
           shoppingCartEntity -> {
             if (shoppingCartEntity.isCompleted()) {
-              log.error("Can't set items on a completed shopping cart.");
+              log.error("Can't update items on a completed shopping cart.");
             } else {
               shoppingCartEntity.setItems(items);
-              shoppingCartEntity.setTotalPrice(setItemRequestedEvent.getTotalPrice());
+              shoppingCartEntity.setTotalPrice(itemsUpdateRequestedEvent.getTotalPrice());
               this.jpaShoppingCartRepository.save(shoppingCartEntity);
               log.info("Shopping cart {} saved", shoppingCartEntity);
             }
           },
-          () -> log.error("Not shopping cart found with id {}", setItemRequestedEvent.getId())
+          () -> log.error("Not shopping cart found with id {}", itemsUpdateRequestedEvent.getId())
       );
     } catch (Exception e) {
-      log.error("Error processing event {}: {}", setItemToShoppingCartRequestedEvent,
+      log.error("Error processing event {}: {}", shoppingCartItemsUpdateRequestedEvent,
           e.getMessage());
       throw e;
     }

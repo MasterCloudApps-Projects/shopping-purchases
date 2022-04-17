@@ -10,10 +10,10 @@ import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreatedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderShoppingCart;
-import es.codeurjc.mca.tfm.purchases.infrastructure.events.SetItemToShoppingCartRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItem;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItemsUpdateRequestedEvent;
 import java.util.List;
 import org.mapstruct.Mapper;
 
@@ -136,12 +136,12 @@ public interface InfraMapper {
   ShoppingCartEntity mapToShoppingCartEntity(OrderShoppingCart orderShoppingCart);
 
   /**
-   * Maps shopping cart DTO to set item to shopping cart requested event.
+   * Maps shopping cart DTO to shopping cart items update requested event.
    *
    * @param shoppingCartDto shopping cart DTO to map.
-   * @return SetItemToShoppingCartRequestedEvent instance.
+   * @return ShoppingCartItemsUpdateRequestedEvent instance.
    */
-  SetItemToShoppingCartRequestedEvent mapToSetItemToShoppingCartRequestedEvent(
+  ShoppingCartItemsUpdateRequestedEvent mapToShoppingCartItemsUpdateRequestedEvent(
       ShoppingCartDto shoppingCartDto);
 
 }

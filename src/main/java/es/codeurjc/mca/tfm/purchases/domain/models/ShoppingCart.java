@@ -152,4 +152,18 @@ public class ShoppingCart {
     return false;
   }
 
+  /**
+   * Delete item from shopping cart.
+   *
+   * @param productId product identifier.
+   * @return true if item was deleted, else false.
+   */
+  public boolean deleteItem(Integer productId) {
+    if (this.items.removeIf(item -> productId.equals(item.getProductId()))) {
+      this.totalPrice = this.items.stream().map(Item::getTotalPrice).reduce(0.0, Double::sum);
+      return true;
+    }
+    return false;
+  }
+
 }

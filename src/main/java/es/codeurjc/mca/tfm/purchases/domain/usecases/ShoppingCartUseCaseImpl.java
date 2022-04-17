@@ -130,8 +130,34 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
             "Can't set item, check item unit price and quantity to be greater than 0");
       }
       ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
-      this.shoppingCartRepository.setItem(shoppingCartDto);
+      this.shoppingCartRepository.updateItems(shoppingCartDto);
       shoppingCartDtoOptional = Optional.of(shoppingCartDto);
+    }
+    return shoppingCartDtoOptional;
+  }
+
+  /**
+   * Delete item from shopping cart with passed id and user.
+   *
+   * @param id        shopping cart identifier.
+   * @param userId    user identifier.
+   * @param productId product identifier.
+   * @return an optional of shopping cart DTO with item deleted.
+   */
+  @Override
+  public Optional<ShoppingCartDto> deleteItem(Long id, Integer userId, Integer productId) {
+    Optional<ShoppingCartDto> shoppingCartDtoOptional = this.shoppingCartRepository.getByIdAndUser(
+        id, userId);
+    if (shoppingCartDtoOptional.isPresent()) {
+      ShoppingCart shoppingCart = DomainMapper.map(shoppingCartDtoOptional.get());
+      if (shoppingCart.isCompleted()) {
+        throw new IllegalShoppingCartStateException("Can't delete item from completed cart");
+      }
+      if (shoppingCart.deleteItem(productId)) {
+        ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
+        this.shoppingCartRepository.updateItems(shoppingCartDto);
+        shoppingCartDtoOptional = Optional.of(shoppingCartDto);
+      }
     }
     return shoppingCartDtoOptional;
   }

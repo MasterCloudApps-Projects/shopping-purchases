@@ -4,10 +4,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * Set item to shopping cart requested event.
+ * Shopping cart items update requested event.
  */
 @Data
-public class SetItemToShoppingCartRequestedEvent {
+public class ShoppingCartItemsUpdateRequestedEvent {
 
   /**
    * Shopping cart identifier.

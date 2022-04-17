@@ -195,4 +195,37 @@ public class ShoppingCartCommandController {
     }
   }
 
+  /**
+   * Deletes item from shopping cart.
+   *
+   * @param id             shopping cart identifier.
+   * @param productId      product identifier.
+   * @param authentication authenticated user info.
+   * @return accepted code response.
+   */
+  @DeleteMapping("/{id}/products/{productId}")
+  public ResponseEntity<Void> deleteItemFromShoppingCart(
+      @PathVariable(name = "id") Long id, @PathVariable(name = "productId") Integer productId,
+      Authentication authentication) {
+    Integer userId = null;
+    try {
+      userId = Integer.valueOf(authentication.getName());
+      this.shoppingCartUseCase.deleteItem(id, userId, productId).orElseThrow(
+          () -> new NotFoundException("Shopping cart with passed id not found for logged user"));
+
+      return ResponseEntity.accepted().build();
+    } catch (IllegalShoppingCartStateException illegalShoppingCartStateException) {
+      log.error("Shopping cart with id {} and user {} is completed and can't delete items from it",
+          id, userId);
+      throw new ConflictException(illegalShoppingCartStateException.getMessage());
+    } catch (NotFoundException notFoundException) {
+      log.error("Shopping cart not found with id and user", id, userId);
+      throw notFoundException;
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      e.printStackTrace();
+      throw new InternalServerErrorException(e.getMessage());
+    }
+  }
+
 }

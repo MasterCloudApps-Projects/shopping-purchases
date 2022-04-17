@@ -56,8 +56,8 @@ public class KafkaTopicConfig {
   /**
    * Kafka set item to shopping cart topic.
    */
-  @Value("${kafka.topics.setItem}")
-  private String setItemsTopic;
+  @Value("${kafka.topics.updateItems}")
+  private String updateItemsTopic;
 
   /**
    * KafkaAdmin Spring bean, which will automatically add topics for all beans of type NewTopic.
@@ -128,7 +128,7 @@ public class KafkaTopicConfig {
    */
   @Bean
   public NewTopic setItemToShoppingCartTopic() {
-    return new NewTopic(this.setItemsTopic, 1, (short) 1);
+    return new NewTopic(this.updateItemsTopic, 1, (short) 1);
   }
 
 }

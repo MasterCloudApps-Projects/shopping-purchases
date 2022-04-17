@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.ShoppingCartRepository;
-import es.codeurjc.mca.tfm.purchases.infrastructure.events.SetItemToShoppingCartRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartDeletionRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItemsUpdateRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraMapper;
 import es.codeurjc.mca.tfm.purchases.infrastructure.repositories.JpaShoppingCartRepository;
 import java.util.Optional;
@@ -59,8 +59,8 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   /**
    * Kafka set item to shopping cart topic.
    */
-  @Value("${kafka.topics.setItem}")
-  private String setItemsTopic;
+  @Value("${kafka.topics.updateItems}")
+  private String updateItemsTopic;
 
   /**
    * Object mapper.
@@ -168,21 +168,21 @@ public class KafkaShoppingCartRepositoryAdapter implements ShoppingCartRepositor
   }
 
   /**
-   * Set an item to a shopping cart.
+   * Updates shopping cart items.
    *
-   * @param shoppingCartDto DTO with shopping cart with item set.
+   * @param shoppingCartDto DTO with shopping cart with updated items.
    */
   @Override
-  public void setItem(ShoppingCartDto shoppingCartDto) {
+  public void updateItems(ShoppingCartDto shoppingCartDto) {
     try {
-      final SetItemToShoppingCartRequestedEvent setItemToShoppingCartRequestedEvent =
-          this.infraMapper.mapToSetItemToShoppingCartRequestedEvent(shoppingCartDto);
-      this.kafkaTemplate.send(this.setItemsTopic,
-          this.objectMapper.writeValueAsString(setItemToShoppingCartRequestedEvent));
-      log.info("Sent set item to shopping cart requested event {}",
-          setItemToShoppingCartRequestedEvent);
+      final ShoppingCartItemsUpdateRequestedEvent shoppingCartItemsUpdateRequestedEvent =
+          this.infraMapper.mapToShoppingCartItemsUpdateRequestedEvent(shoppingCartDto);
+      this.kafkaTemplate.send(this.updateItemsTopic,
+          this.objectMapper.writeValueAsString(shoppingCartItemsUpdateRequestedEvent));
+      log.info("Sent shopping cart items update requested event {}",
+          shoppingCartItemsUpdateRequestedEvent);
     } catch (JsonProcessingException e) {
-      log.error("Error sending set item to shopping cart requested event");
+      log.error("Error sending shopping cart items update requested event");
       e.printStackTrace();
     }
   }

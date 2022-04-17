@@ -67,8 +67,8 @@ public class KafkaTestConfiguration {
   /**
    * Kafka set item to shopping cart topic.
    */
-  @Value("${kafka.topics.setItem}")
-  private String setItemsTopic;
+  @Value("${kafka.topics.updateItems}")
+  private String updateItemsTopic;
 
   @Bean
   public KafkaAdmin kafkaAdmin() {
@@ -134,7 +134,7 @@ public class KafkaTestConfiguration {
    */
   @Bean
   public NewTopic setItemToShoppingCartTopic() {
-    return new NewTopic(this.setItemsTopic, 1, (short) 1);
+    return new NewTopic(this.updateItemsTopic, 1, (short) 1);
   }
 
   @Bean
