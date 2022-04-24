@@ -7,14 +7,16 @@ import es.codeurjc.mca.tfm.purchases.domain.dtos.OrderDto;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.OrderEntity;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
-import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreatedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderShoppingCart;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderUpdateRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderValidationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCompletionRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartCreationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItem;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.ShoppingCartItemsUpdateRequestedEvent;
 import java.util.List;
+import java.util.Optional;
 import org.mapstruct.Mapper;
 
 /**
@@ -53,6 +55,21 @@ public interface InfraMapper {
     }
     final ObjectMapper objectMapper = new ObjectMapper();
     return objectMapper.writeValueAsString(items);
+  }
+
+  /**
+   * Map an optional list of string to json array as string.
+   *
+   * @param stringList list of strings to map.
+   * @return json array as string.
+   * @throws JsonProcessingException if an error mapping list to json happens.
+   */
+  default String map(Optional<List<String>> stringList) throws JsonProcessingException {
+    if (stringList == null || stringList.isEmpty()) {
+      return null;
+    }
+    final ObjectMapper objectMapper = new ObjectMapper();
+    return objectMapper.writeValueAsString(stringList.get());
   }
 
   /**
@@ -120,12 +137,20 @@ public interface InfraMapper {
   OrderEntity mapToOrderEntity(OrderCreationRequestedEvent orderCreationRequestedEvent);
 
   /**
-   * Maps order entity to order created event.
+   * Maps order update requested event to order entity.
    *
-   * @param orderEntity order entity to map.
-   * @return OrderCreatedEvent instance.
+   * @param orderUpdateRequestedEvent created order event to map.
+   * @return OrderEntity instance.
    */
-  OrderCreatedEvent mapToOrderCreatedEvent(OrderEntity orderEntity);
+  OrderEntity mapToOrderEntity(OrderUpdateRequestedEvent orderUpdateRequestedEvent);
+
+  /**
+   * Maps order DTO to order update requested event.
+   *
+   * @param orderDto order DTO to map.
+   * @return OrderUpdateRequestedEvent instance.
+   */
+  OrderUpdateRequestedEvent mapToOrderUpdateRequestedEvent(OrderDto orderDto);
 
   /**
    * Maps event order shopping cart to a shopping cart entity.
@@ -143,5 +168,37 @@ public interface InfraMapper {
    */
   ShoppingCartItemsUpdateRequestedEvent mapToShoppingCartItemsUpdateRequestedEvent(
       ShoppingCartDto shoppingCartDto);
+
+  /**
+   * Maps order entity to order DTO.
+   *
+   * @param orderEntity order entity to map.
+   * @return mapped order DTO.
+   */
+  OrderDto mapToOrderDto(OrderEntity orderEntity);
+
+  /**
+   * Maps order DTO to order validation requested event.
+   *
+   * @param orderDto shopping cart DTO to map.
+   * @return OrderValidationRequestedEvent instance.
+   */
+  OrderValidationRequestedEvent mapToOrderValidationRequestedEvent(OrderDto orderDto);
+
+  /**
+   * Map a string to a optional list of strings.
+   *
+   * @param errors string to map.
+   * @return an optinal with a list of string.
+   * @throws JsonProcessingException if an error happens.
+   */
+  default Optional<List<String>> mapToOptionalListOfString(String errors)
+      throws JsonProcessingException {
+    if (errors == null) {
+      return Optional.empty();
+    }
+    final ObjectMapper objectMapper = new ObjectMapper();
+    return Optional.ofNullable(List.of(objectMapper.readValue(errors, String[].class)));
+  }
 
 }

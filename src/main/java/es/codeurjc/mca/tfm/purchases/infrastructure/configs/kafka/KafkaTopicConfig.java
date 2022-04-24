@@ -60,6 +60,31 @@ public class KafkaTopicConfig {
   private String updateItemsTopic;
 
   /**
+   * Kafka update order topic.
+   */
+  @Value("${kafka.topics.updateOrder}")
+  private String updateOrderTopic;
+
+  /**
+   * Kafka restore items stock topic.
+   */
+  @Value("${kafka.topics.restoreStock}")
+  private String restoreStockTopic;
+
+  /**
+   * Kafka validate user balance topic.
+   */
+  @Value("${kafka.topics.validateBalance}")
+  private String validateBalanceTopic;
+
+  /**
+   * Kafka validate user balance topic.
+   */
+  @Value("${kafka.topics.changeState}")
+  private String changeOrderStateTopic;
+
+
+  /**
    * KafkaAdmin Spring bean, which will automatically add topics for all beans of type NewTopic.
    *
    * @return KafkaAdmin instance.
@@ -129,6 +154,46 @@ public class KafkaTopicConfig {
   @Bean
   public NewTopic setItemToShoppingCartTopic() {
     return new NewTopic(this.updateItemsTopic, 1, (short) 1);
+  }
+
+  /**
+   * Update order topic bean.
+   *
+   * @return NewTopic instance for update order topic.
+   */
+  @Bean
+  public NewTopic updateOrderTopic() {
+    return new NewTopic(this.updateOrderTopic, 1, (short) 1);
+  }
+
+  /**
+   * Restore stock topic bean.
+   *
+   * @return NewTopic instance for restore stock topic.
+   */
+  @Bean
+  public NewTopic restoreStockTopic() {
+    return new NewTopic(this.restoreStockTopic, 1, (short) 1);
+  }
+
+  /**
+   * Validate user balance topic bean.
+   *
+   * @return NewTopic instance for validate balance topic.
+   */
+  @Bean
+  public NewTopic validateBalanceTopic() {
+    return new NewTopic(this.validateBalanceTopic, 1, (short) 1);
+  }
+
+  /**
+   * Change order state topic bean.
+   *
+   * @return NewTopic instance for change order state topic.
+   */
+  @Bean
+  public NewTopic changeOrderStateTopic() {
+    return new NewTopic(this.changeOrderStateTopic, 1, (short) 1);
   }
 
 }

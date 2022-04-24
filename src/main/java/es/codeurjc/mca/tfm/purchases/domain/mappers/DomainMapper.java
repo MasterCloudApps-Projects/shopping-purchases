@@ -4,6 +4,7 @@ import es.codeurjc.mca.tfm.purchases.domain.dtos.OrderDto;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.models.Item;
 import es.codeurjc.mca.tfm.purchases.domain.models.Order;
+import es.codeurjc.mca.tfm.purchases.domain.models.OrderState;
 import es.codeurjc.mca.tfm.purchases.domain.models.ShoppingCart;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +47,18 @@ public class DomainMapper {
    */
   public static OrderDto map(Order order) {
     ShoppingCartDto shoppingCartDto = map(order.getShoppingCart());
-    return new OrderDto(order.getId(), shoppingCartDto, order.getState());
+    return new OrderDto(order.getId(), shoppingCartDto, order.getState().name(), order.getErrors());
+  }
+
+  /**
+   * Maps order DTO to domain entity.
+   *
+   * @param orderDto DTO to map.
+   * @return mapped order domain.
+   */
+  public static Order map(OrderDto orderDto) {
+    return new Order(orderDto.getId(), map(orderDto.getShoppingCart()),
+        OrderState.valueOf(orderDto.getState()), orderDto.getErrors());
   }
 
 }

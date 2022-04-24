@@ -115,7 +115,10 @@ public class ShoppingCartEventsListener {
           shoppingCartCompletionRequestedEvent, ShoppingCartCompletionRequestedEvent.class);
       this.jpaShoppingCartRepository.findById(completionRequestedEvent.getId()).ifPresentOrElse(
           shoppingCartEntity -> {
-            if (shoppingCartEntity.getTotalPrice().compareTo(
+            if (shoppingCartEntity.isCompleted()) {
+              log.info("Shopping cart with id {} already completed",
+                  completionRequestedEvent.getId());
+            } else if (shoppingCartEntity.getTotalPrice().compareTo(
                 completionRequestedEvent.getTotalPrice()) != 0) {
               log.error(
                   "Shopping cart total price is different of passed price. "

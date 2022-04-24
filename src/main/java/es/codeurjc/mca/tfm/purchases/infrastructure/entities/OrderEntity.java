@@ -1,5 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.infrastructure.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 /**
  * Order database entity.
@@ -37,5 +39,12 @@ public class OrderEntity {
    */
   @NotBlank
   private String state;
+
+  /**
+   * Errors happened in order if they exist.
+   */
+  @Type(type = "json")
+  @Column(columnDefinition = "json")
+  private String errors;
 
 }

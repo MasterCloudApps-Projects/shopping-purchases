@@ -19,6 +19,10 @@ kafka:
     createOrder: create-orders
     validateItems: validate-items
     updateItems: update-items
+    updateOrder: update-orders
+    restoreStock: restore-stock
+    validateBalance: validate-balance
+    changeState: change-orders-state
 
 spring:
   datasource:

@@ -3,10 +3,10 @@ package es.codeurjc.mca.tfm.purchases.infrastructure.events;
 import lombok.Data;
 
 /**
- * Created order event.
+ * Requested order validation event.
  */
 @Data
-public class OrderCreatedEvent {
+public class OrderValidationRequestedEvent {
 
   /**
    * Order identifier.
@@ -19,8 +19,13 @@ public class OrderCreatedEvent {
   private OrderShoppingCart shoppingCart;
 
   /**
-   * State.
+   * Success state.
    */
-  private String state;
+  private String successState;
+
+  /**
+   * Success state.
+   */
+  private String failureState;
 
 }
