@@ -1,7 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.integration.application.controllers;
 
 import es.codeurjc.mca.tfm.purchases.PurchasesApplication;
-import es.codeurjc.mca.tfm.purchases.config.KafkaTestConfiguration;
 import es.codeurjc.mca.tfm.purchases.testcontainers.TestContainersBase;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
@@ -36,7 +34,6 @@ import reactor.netty.http.client.HttpClient;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PurchasesApplication.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import(KafkaTestConfiguration.class)
 @ActiveProfiles("test")
 @Tag("IntegrationTest")
 @DirtiesContext

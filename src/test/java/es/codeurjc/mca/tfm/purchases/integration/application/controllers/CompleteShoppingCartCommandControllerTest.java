@@ -1,19 +1,24 @@
 package es.codeurjc.mca.tfm.purchases.integration.application.controllers;
 
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ItemResponseDto;
 import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ShoppingCartResponseDto;
+import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
+import es.codeurjc.mca.tfm.purchases.domain.ports.in.OrderUseCase;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
@@ -21,8 +26,11 @@ import org.springframework.test.annotation.DirtiesContext;
 @DisplayName("ShoppingCartCommandController complete endpoint integration tests")
 public class CompleteShoppingCartCommandControllerTest extends ShoppingCartCommandControllerTest {
 
-  @Value("${kafka.topics.validateItems}")
-  private String validateItemsTopic;
+  @SpyBean
+  private OrderUseCase orderUseCase;
+
+  @Captor
+  private ArgumentCaptor<ShoppingCartDto> shoppingCartDtoArgumentCaptor;
 
   @Test
   @DisplayName("Test shopping cart completion successfully")
@@ -63,8 +71,21 @@ public class CompleteShoppingCartCommandControllerTest extends ShoppingCartComma
         .getResponseBody();
 
     assertTrue(shoppingCartResponseDto.isCompleted());
-    verify(this.kafkaTemplate, times(1)).send(eq(this.validateItemsTopic),
-        any(String.class));
+    verify(this.orderUseCase, times(1))
+        .create(shoppingCartDtoArgumentCaptor.capture());
+    ShoppingCartDto shoppingCartDto = shoppingCartDtoArgumentCaptor.getValue();
+    assertEquals(shoppingCartResponseDto.getId(), shoppingCartDto.getId());
+    assertEquals(shoppingCartResponseDto.getUserId(), shoppingCartDto.getUserId());
+    assertEquals(shoppingCartResponseDto.getItems(), shoppingCartDto.getItems().stream()
+        .map(itemDto -> ItemResponseDto.builder()
+            .productId(itemDto.getProductId())
+            .unitPrice(itemDto.getUnitPrice())
+            .quantity(itemDto.getQuantity())
+            .totalPrice(itemDto.getTotalPrice())
+            .build())
+        .collect(Collectors.toList()));
+    assertEquals(shoppingCartResponseDto.getTotalPrice(), shoppingCartDto.getTotalPrice());
+
 
   }
 
