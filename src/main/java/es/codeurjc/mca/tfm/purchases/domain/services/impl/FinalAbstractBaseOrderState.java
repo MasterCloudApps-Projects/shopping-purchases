@@ -13,7 +13,7 @@ public abstract class FinalAbstractBaseOrderState implements OrderStateService {
   /**
    * Order repository.
    */
-  private final OrderRepository orderRepository;
+  protected final OrderRepository orderRepository;
 
   /**
    * Constructor.

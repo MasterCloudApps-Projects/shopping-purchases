@@ -45,6 +45,13 @@ public interface OrderRepository {
   void validateBalance(OrderDto orderDto);
 
   /**
+   * Restores items stock.
+   *
+   * @param orderDto order DTO.
+   */
+  void restoreItemsStock(OrderDto orderDto);
+
+  /**
    * Finish order.
    *
    * @param orderDto order DTO.

@@ -1,6 +1,7 @@
 package es.codeurjc.mca.tfm.purchases.domain.dtos;
 
 import es.codeurjc.mca.tfm.purchases.domain.models.Item;
+import java.util.Objects;
 
 /**
  * Item domain DTO.
@@ -76,5 +77,23 @@ public class ItemDto {
 
   public void setTotalPrice(Double totalPrice) {
     this.totalPrice = totalPrice;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ItemDto itemDto = (ItemDto) o;
+    return productId.equals(itemDto.productId) && unitPrice.equals(itemDto.unitPrice)
+        && quantity.equals(itemDto.quantity) && totalPrice.equals(itemDto.totalPrice);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(productId, unitPrice, quantity, totalPrice);
   }
 }

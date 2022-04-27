@@ -1,5 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.domain.services.impl;
 
+import es.codeurjc.mca.tfm.purchases.domain.dtos.OrderDto;
 import es.codeurjc.mca.tfm.purchases.domain.models.OrderState;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.OrderRepository;
 
@@ -25,6 +26,21 @@ public class RejectedStateServiceImpl extends FinalAbstractBaseOrderState {
   @Override
   public String getState() {
     return OrderState.REJECTED.name();
+  }
+
+  /**
+   * Perform action for current state keeping in mind previous state.
+   *
+   * @param previousState previous state.
+   * @param currentState  current state.
+   * @param orderDto      order DTO.
+   */
+  @Override
+  public void performAction(OrderState previousState, OrderState currentState, OrderDto orderDto) {
+    if (OrderState.VALIDATING_BALANCE.equals(previousState)) {
+      this.orderRepository.restoreItemsStock(orderDto);
+    }
+    super.performAction(previousState, currentState, orderDto);
   }
 
 }

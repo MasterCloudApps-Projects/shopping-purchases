@@ -7,6 +7,7 @@ import es.codeurjc.mca.tfm.purchases.domain.dtos.OrderDto;
 import es.codeurjc.mca.tfm.purchases.domain.models.OrderState;
 import es.codeurjc.mca.tfm.purchases.domain.ports.out.OrderRepository;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreationRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderRejectedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderUpdateRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderValidationRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.mappers.InfraMapper;
@@ -62,6 +63,12 @@ public class KafkaOrderRepositoryAdapter implements OrderRepository {
    */
   @Value("${kafka.topics.validateBalance}")
   private String validateBalanceTopic;
+
+  /**
+   * Kafka restore items stock topic.
+   */
+  @Value("${kafka.topics.restoreStock}")
+  private String restoreStockTopic;
 
   /**
    * Object mapper.
@@ -173,6 +180,25 @@ public class KafkaOrderRepositoryAdapter implements OrderRepository {
       log.info("Sent user balance validation requested event {}", orderValidationRequestedEvent);
     } catch (JsonProcessingException e) {
       log.error("Error sending user balance validation requested event");
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Restores items stock.
+   *
+   * @param orderDto order DTO.
+   */
+  @Override
+  public void restoreItemsStock(OrderDto orderDto) {
+    try {
+      OrderRejectedEvent orderRejectedEvent =
+          this.infraMapper.mapToOrderRejectedEvent(orderDto);
+      this.kafkaTemplate.send(this.restoreStockTopic,
+          this.objectMapper.writeValueAsString(orderRejectedEvent));
+      log.info("Sent items restore stock requested event {}", orderRejectedEvent);
+    } catch (JsonProcessingException e) {
+      log.error("Error sending items restore stock requested event");
       e.printStackTrace();
     }
   }

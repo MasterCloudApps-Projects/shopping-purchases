@@ -8,6 +8,7 @@ import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.OrderEntity;
 import es.codeurjc.mca.tfm.purchases.infrastructure.entities.ShoppingCartEntity;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderCreationRequestedEvent;
+import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderRejectedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderShoppingCart;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderUpdateRequestedEvent;
 import es.codeurjc.mca.tfm.purchases.infrastructure.events.OrderValidationRequestedEvent;
@@ -200,5 +201,14 @@ public interface InfraMapper {
     final ObjectMapper objectMapper = new ObjectMapper();
     return Optional.ofNullable(List.of(objectMapper.readValue(errors, String[].class)));
   }
+
+  /**
+   * Maps order DTO to order rejected event.
+   *
+   * @param orderDto shopping cart DTO to map.
+   * @return OrderRejectedEvent instance.
+   */
+  OrderRejectedEvent mapToOrderRejectedEvent(OrderDto orderDto);
+
 
 }
