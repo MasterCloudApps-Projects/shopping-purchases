@@ -1,5 +1,20 @@
 version: '3.9'
 services:
+  purchases:
+    image: "${DOCKER_LOCAL_IMAGE}"
+    ports:
+      - 8446:8446
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/purchases
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=pass
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - KAFKA_BOOTSTRAPADDRESS=kafka:9092
+    depends_on:
+      - mysql
+      - kafka
+    restart: on-failure
+
   mysql:
     image: mysql:8.0.27
     ports:

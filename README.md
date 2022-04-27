@@ -52,6 +52,7 @@ The next requirements are necessary to work with this project:
 * jsonwebtoken
 * spring-boot-starter-validation
 * hibernate-types-55 2.16.0
+* * [Jib Maven Plugin](https://github.com/GoogleContainerTools/jib/tree/master/jib-maven-plugin): Jib is a Maven plugin for building Docker and OCI images for your Java applications.
 [//]: # (* flyway)
 
 ### Development dependencies
@@ -72,9 +73,14 @@ The next requirements are necessary to work with this project:
 
 ## Configuration
 **NOTE:** If the containers are not accessible via localhost, it will be necessary to use ${DOCKER_HOST_IP} instead of localhost. To do this, give a value to the variable:
-````
+```
 export DOCKER_HOST_IP=127.0.0.1
 ```
+For Mac:
+```
+sudo ifconfig lo0 alias 10.200.10.1/24  # (where 10.200.10.1 is some unused IP address)
+export DOCKER_HOST_IP=10.200.10.1
+``` 
 
 > TODO
 
@@ -93,24 +99,54 @@ mvn clean install
 ```
 
 ### Run tests
-> TODO
+```
+mvn test
+```
 
 #### Run Unit Tests
 > TODO
 
 #### Run Integration Tests
-> TODO
+```
+mvn test -Pit
+```
 
 ### Run application
 
 #### Locally
-> TODO
+To run application locally:
+1. Up necessary services:
+   ```
+   docker-compose -f docker/docker-compose-dev.yml up
+   ```
+   Note: to stop services when they are not necessary run:
+   ```
+   docker-compose -f docker/docker-compose-dev.yml down
+   ```
+2. Execute the app:
+    ```
+    mvn spring-boot:run
+    ```
 
 #### As docker container
-> TODO
+To run application in a docker container execute:
+```
+cd docker
+./dockerize.sh
+```
+Note: to stop application in container when not necessary then run:
+```
+cd docker
+docker-compose down
+```
 
 #### Checking application is running
-> TODO
+In both cases, [locally](#locally) and [As docker container](#as-docker-container) you can use [openapi definition](./api/openapi.yml) or [Postman collection](./postman/Purchases API.postman_collection.json) to test running application.
+
+* **Openapi**: open `openapi-v1.yml` content in [swagger editor](https://editor.swagger.io/) and select `localhost` server and execute endpoints you want.
+* **Postman**: select `TFM-purchases-local-env` environment variable. Execute postman collection:
+    * **Manually**: Set values you want in the endpoint body and run it.
+    * **Automatically**: Set values to `userToken`, `userId`, `productId` and `secondProductId` variables, and execute [Postman Collection Runner](https://learning.postman.com/docs/running-collections/intro-to-collection-runs/).
 
 ## Contributing
 > TODO

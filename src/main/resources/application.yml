@@ -5,7 +5,7 @@ security:
 
 server:
   ssl:
-    key-store-password: tfmamartinm
+    key-store-password: ${KEY_STORE_PASS:tfmamartinm}
     key-store: classpath:keystore.jks
   port: 8446
 
