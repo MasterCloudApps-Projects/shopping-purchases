@@ -7,8 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-  install:
-    name:  Install
+  checkstyle:
+    name: Analyzes source code
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,10 +19,29 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
-      - name: Maven install
-        run: mvn clean install
+      - name: Maven checkstyle
+        run: mvn checkstyle:check
+  tests:
+    needs: [ checkstyle ]
+    name: Run unitary and integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: maven
+      - name: Clean
+        run: mvn clean
+      - name: Run unit tests
+        run: mvn test -Punit
+      - name: Run integration tests
+        run: mvn test -Pit
   publish-image:
-    needs: [ install ]
+    needs: [ tests ]
     name: Publish Docker image
     runs-on: ubuntu-latest
     env:
@@ -40,4 +59,4 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Create and publish docker image
-        run: mvn jib:build -Dimage=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TRUNK_TAG }}
+        run: mvn compile jib:build -Dimage=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TRUNK_TAG }}
