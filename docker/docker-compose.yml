@@ -10,6 +10,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=pass
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
       - KAFKA_BOOTSTRAPADDRESS=kafka:9092
+      - SPRING_DEVTOOLS_ADDPROPERTIES=false
     depends_on:
       - mysql
       - kafka

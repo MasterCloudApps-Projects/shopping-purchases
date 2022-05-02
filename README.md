@@ -24,6 +24,7 @@
         - [PRO](#pro)
         - [Checking application is deployed](#checking-application-is-deployed)
     - [Developers](#developers)
+    - [Appendix](#appendix)
 
 ## Description
 1. A purchases API Rest that allows as user:
@@ -177,3 +178,12 @@ When a push is done on remote branch (or a PR), github actions jobs defined in [
 This project was developed by:
 
 👤 [Álvaro Martín](https://github.com/amartinm82) - :incoming_envelope: [amartinm82@gmail.com](amartinm82@gmail.com)
+
+## Appendix
+### Mac M1 issues
+* Error deploying k8s manifests in minikube:
+```
+"no matching manifest for linux/arm64/v8 in the manifest list entries"
+```
+* Solution:
+Use any of [mysql images with arm64 support](https://hub.docker.com/r/arm64v8/mysql/): 8.0.29-oracle, 8.0-oracle, 8-oracle, oracle
