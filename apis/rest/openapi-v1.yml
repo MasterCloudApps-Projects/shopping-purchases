@@ -92,7 +92,8 @@ paths:
           name: id
           required: true
           schema:
-            type: int64
+            type: integer
+            format: int64
           example: 1
       security:
         - bearerAuth: [ ]
@@ -129,7 +130,8 @@ paths:
           name: id
           required: true
           schema:
-            type: int64
+            type: integer
+            format: int64
           example: 1
       security:
         - bearerAuth: [ ]
@@ -174,7 +176,8 @@ paths:
           name: id
           required: true
           schema:
-            type: int64
+            type: integer
+            format: int64
           example: 1
       security:
         - bearerAuth: [ ]
@@ -218,7 +221,8 @@ paths:
           name: id
           required: true
           schema:
-            type: int64
+            type: integer
+            format: int64
           example: 1
         - in: path
           description: Numeric identifier of the product to set in shopping cart.
@@ -275,7 +279,8 @@ paths:
           name: id
           required: true
           schema:
-            type: int64
+            type: integer
+            format: int64
           example: 1
         - in: path
           description: Numeric identifier of the product to remove from shopping cart.
@@ -411,7 +416,8 @@ components:
       properties:
         id:
           description: Shopping cart identifier.
-          type: int64
+          type: integer
+          format: int64
           example: 1
         userId:
           description: User identifier.
