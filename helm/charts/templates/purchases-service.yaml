@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "purchases.service" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "purchases.name" . }}
+    release: {{ .Release.Name }}
+  annotations:
+    dev.okteto.com/auto-ingress: 'false'
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+      protocol: TCP
+      name: {{ include "purchases.port" . }}
+  selector:
+    app: {{ include "purchases.name" . }}
+    release: {{ .Release.Name }}
+  type: {{ .Values.service.type }}

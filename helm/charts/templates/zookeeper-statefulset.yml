@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "zookeeper.name" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "zookeeper.name" . }}
+      release: {{ .Release.Name }}
+  serviceName: {{ include "zookeeper.headless.service" . }}
+  replicas: {{ .Values.zookeeper.replicas }}
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  template:
+    metadata:
+      labels:
+        app: {{ include "zookeeper.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: kubernetes-zookeeper
+        imagePullPolicy: Always
+        image: {{ .Values.zookeeper.image.repository }}:{{ .Values.zookeeper.image.tag }}
+        resources:
+          requests:
+            memory: {{ .Values.zookeeper.resources.requests.memory }}
+            cpu: {{ .Values.zookeeper.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.zookeeper.resources.limits.memory }}
+            cpu: {{ .Values.zookeeper.resources.limits.cpu }}
+        ports:
+        - containerPort: {{ .Values.zookeeper.ports.client }}
+          name: {{ include "zookeeper.client.port" . }}
+        - containerPort: {{ .Values.zookeeper.ports.server }}
+          name: {{ include "zookeeper.server.port" . }}
+        - containerPort: {{ .Values.zookeeper.ports.le }}
+          name: {{ include "zookeeper.le.port" . }}
+        env:
+          - name: ZOOKEEPER_CLIENT_PORT
+            value: "{{ .Values.zookeeper.ports.client }}"
+          - name: ZOOKEEPER_SERVER_PORT
+            value: "{{ .Values.zookeeper.ports.server }}"
+          - name: ZOOKEEPER_LE_PORT
+            value: "{{ .Values.zookeeper.ports.le }}"
+        command:
+        - sh
+        - -c
+        - "start-zookeeper \
+          --servers=3 \
+          --data_dir=/var/lib/zookeeper/data \
+          --data_log_dir=/var/lib/zookeeper/data/log \
+          --conf_dir=/opt/zookeeper/conf \
+          --client_port=$(ZOOKEEPER_CLIENT_PORT) \
+          --election_port=$(ZOOKEEPER_LE_PORT) \
+          --server_port=$(ZOOKEEPER_SERVER_PORT) \
+          --tick_time=2000 \
+          --init_limit=10 \
+          --sync_limit=5 \
+          --heap=256M \
+          --max_client_cnxns=60 \
+          --snap_retain_count=3 \
+          --purge_interval=12 \
+          --max_session_timeout=40000 \
+          --min_session_timeout=4000 \
+          --log_level=INFO"
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "zookeeper-ready $(ZOOKEEPER_CLIENT_PORT)"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "zookeeper-ready $(ZOOKEEPER_CLIENT_PORT)"
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper
+      securityContext:
+        runAsUser: {{ .Values.zookeeper.runAsUser }}
+        fsGroup: {{ .Values.zookeeper.fsGroup }}
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

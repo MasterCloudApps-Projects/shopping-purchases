@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "purchases.deploy" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ include "purchases.name" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "purchases.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+      containers:
+      - name: {{ include "purchases.name" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+        env:
+        - name: SPRING_DEVTOOLS_ADDPROPERTIES
+          value: "false"
+        - name: SPRING_DATASOURCE_URL
+          value: '{{ include "mysql.service" . }}/{{ .Values.mysql.database }}'
+        - name: SPRING_DATASOURCE_USERNAME
+          value: {{ .Values.mysql.user }}
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "purchases.secrets" . }}
+              key: mysqlpass
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          value: com.mysql.cj.jdbc.Driver
+        - name: KAFKA_BOOTSTRAPADDRESS
+          value: '{{ include "kafka.service" . }}:{{ .Values.kafka.port }}'
+        - name: SERVER_SSL_PORT
+          value: '{{ .Values.service.port }}'
+        ports:
+        - containerPort: {{ .Values.service.port }}

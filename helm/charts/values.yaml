@@ -1,0 +1,86 @@
+# Default values for purchases API.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# K8s namespace
+namespace: tfm-dev-amartinm82
+
+# MySQL
+mysql:
+  create: false
+  image:
+    repository: mysql
+    tag: 8.0.22
+  host: localhost
+  user: root
+  password: password
+  database: purchases
+  port: 3306
+  replicas: 1
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Zookeeper
+zookeeper:
+  image:
+    repository: k8s.gcr.io/kubernetes-zookeeper
+    tag: 1.0-3.4.10
+  ports:
+    server: 2888
+    le: 3888
+    client: 2181
+  replicas: 3
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  runAsUser: 1000
+  fsGroup: 1000
+
+# Kafka
+kafka:
+  port: 9092
+  replicas: 3
+  image:
+    repository: gcr.io/google_containers/kubernetes-kafka
+    tag: 1.0-10.2.1
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  runAsUser: 1000
+  fsGroup: 1000
+
+
+# security context
+securityContext:
+  runAsUser: 1001
+
+replicaCount: 1
+
+image:
+  repository: amartinm82/tfm-purchases
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8446
+
+resources:
+  requests:
+    memory: "1Gi"
+    cpu: "750m"
+  limits:
+    memory: "2Gi"
+    cpu: "1250"
