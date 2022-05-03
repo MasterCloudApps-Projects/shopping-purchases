@@ -34,7 +34,7 @@ zookeeper:
     server: 2888
     le: 3888
     client: 2181
-  replicas: 3
+  replicas: 1
   resources:
     requests:
       memory: "256Mi"
@@ -48,7 +48,7 @@ zookeeper:
 # Kafka
 kafka:
   port: 9092
-  replicas: 3
+  replicas: 2
   image:
     repository: gcr.io/google_containers/kubernetes-kafka
     tag: 1.0-10.2.1
