@@ -48,7 +48,7 @@ zookeeper:
 # Kafka
 kafka:
   port: 9092
-  replicas: 2
+  replicas: 1
   image:
     repository: gcr.io/google_containers/kubernetes-kafka
     tag: 1.0-10.2.1
@@ -79,8 +79,8 @@ service:
 
 resources:
   requests:
-    memory: "1Gi"
-    cpu: "750m"
+    memory: "512Mi"
+    cpu: "500m"
   limits:
-    memory: "2Gi"
-    cpu: "1250"
+    memory: "1Gi"
+    cpu: "1000m"
