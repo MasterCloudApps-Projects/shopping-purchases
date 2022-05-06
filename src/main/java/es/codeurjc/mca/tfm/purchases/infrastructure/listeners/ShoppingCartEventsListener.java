@@ -69,8 +69,16 @@ public class ShoppingCartEventsListener {
       ShoppingCartEntity shoppingCartEntity = this.mapper.map(
           this.objectMapper.readValue(shoppingCartCreationRequestedEvent,
               ShoppingCartCreationRequestedEvent.class));
-      this.jpaShoppingCartRepository.save(shoppingCartEntity);
-      log.info("Shopping cart {} saved", shoppingCartEntity);
+      this.jpaShoppingCartRepository.findByUserIdAndCompletedIsFalse(shoppingCartEntity.getUserId())
+          .ifPresentOrElse(
+              incompleteShoppingCartEntity -> log.error(
+                  "Can't create shopping cart. Already exists an incomplete shopping cart {}",
+                  incompleteShoppingCartEntity),
+              () -> {
+                this.jpaShoppingCartRepository.save(shoppingCartEntity);
+                log.info("Shopping cart {} saved", shoppingCartEntity);
+              }
+          );
     } catch (Exception e) {
       log.error("Error processing event {}: {}", shoppingCartCreationRequestedEvent,
           e.getMessage());
