@@ -33,8 +33,12 @@ spec:
         env:
           - name: SPRING_DEVTOOLS_ADDPROPERTIES
             value: "false"
-          - name: SPRING_DATASOURCE_URL
-            value: jdbc:mysql://mysql-service:3306/purchases
+          - name: RDS_HOSTNAME
+            value: mysql-service
+          - name: RDS_PORT
+            value: "3306"
+          - name: RDS_DATABASE
+            value: purchases
           - name: SPRING_DATASOURCE_USERNAME
             value: root
           - name: SPRING_DATASOURCE_PASSWORD

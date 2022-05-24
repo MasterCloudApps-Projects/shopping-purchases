@@ -54,11 +54,11 @@ kafka:
     tag: 1.0-10.2.1
   resources:
     requests:
-      memory: "256Mi"
-      cpu: "250m"
-    limits:
       memory: "512Mi"
       cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
   runAsUser: 1000
   fsGroup: 1000
 

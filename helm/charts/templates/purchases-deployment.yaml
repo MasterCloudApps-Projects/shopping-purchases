@@ -34,8 +34,12 @@ spec:
         env:
         - name: SPRING_DEVTOOLS_ADDPROPERTIES
           value: "false"
-        - name: SPRING_DATASOURCE_URL
-          value: 'jdbc:mysql://{{ include "mysql.service" . }}:{{ .Values.mysql.port }}/{{ .Values.mysql.database }}'
+        - name: RDS_HOSTNAME
+          value: '{{ include "mysql.service" . }}'
+        - name: RDS_PORT
+          value: '{{ .Values.mysql.port }}'
+        - name: RDS_DATABASE
+          value: '{{ .Values.mysql.database }}'
         - name: SPRING_DATASOURCE_USERNAME
           value: {{ .Values.mysql.user }}
         - name: SPRING_DATASOURCE_PASSWORD

@@ -5,7 +5,9 @@ services:
     ports:
       - 8446:8446
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/purchases
+      - RDS_HOSTNAME=mysql
+      - RDS_PORT=3306
+      - RDS_DATABASE=purchases
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=pass
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
