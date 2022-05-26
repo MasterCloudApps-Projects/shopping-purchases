@@ -3,6 +3,7 @@ package es.codeurjc.mca.tfm.purchases.domain.usecases;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.OrderDto;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.IllegalOrderStateException;
+import es.codeurjc.mca.tfm.purchases.domain.exceptions.IllegalShoppingCartStateException;
 import es.codeurjc.mca.tfm.purchases.domain.exceptions.PreviousOrderStateUpdateException;
 import es.codeurjc.mca.tfm.purchases.domain.mappers.DomainMapper;
 import es.codeurjc.mca.tfm.purchases.domain.models.Order;
@@ -51,6 +52,9 @@ public class OrderUseCaseImpl implements OrderUseCase {
   @Override
   public OrderDto create(ShoppingCartDto shoppingCartDto) {
     ShoppingCart shoppingCart = DomainMapper.map(shoppingCartDto);
+    if (!shoppingCart.isCompleted()) {
+      throw new IllegalShoppingCartStateException("Can't create order from incomplete cart");
+    }
     Order order = new Order(shoppingCart);
     OrderDto orderDto = DomainMapper.map(order);
     this.orderRepository.create(orderDto);
