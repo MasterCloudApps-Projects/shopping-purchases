@@ -12,7 +12,7 @@ public enum OrderState {
 
   public final int weight;
 
-  private OrderState(int weight) {
+  OrderState(int weight) {
     this.weight = weight;
   }
 

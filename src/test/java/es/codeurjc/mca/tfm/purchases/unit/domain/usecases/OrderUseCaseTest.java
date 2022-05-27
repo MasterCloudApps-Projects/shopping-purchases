@@ -34,11 +34,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@ActiveProfiles("test")
 @Tag("UnitTest")
 @DisplayName("Order Use Case tests")
 public class OrderUseCaseTest {
