@@ -101,13 +101,12 @@ public class ShoppingCartCommandController {
     Integer userId = null;
     try {
       userId = Integer.valueOf(authentication.getName());
-      ShoppingCartDto shoppingCartDto = this.shoppingCartUseCase.delete(id, userId)
+      this.shoppingCartUseCase.delete(id, userId)
           .orElseThrow(
               () -> new NotFoundException(
                   "Shopping cart with passed id not found for logged user"));
 
-      return ResponseEntity.accepted()
-          .body(this.applicationShoppingCartMapper.map(shoppingCartDto));
+      return ResponseEntity.accepted().build();
     } catch (IllegalShoppingCartStateException illegalShoppingCartStateException) {
       log.error("Shopping cart with id {} and user {} is completed and can't be deleted", id,
           userId);
