@@ -199,7 +199,9 @@ mvn test
 ```
 
 #### Run Unit Tests
-> TODO
+```
+mvn test -Punit
+```
 
 #### Run Integration Tests
 ```
