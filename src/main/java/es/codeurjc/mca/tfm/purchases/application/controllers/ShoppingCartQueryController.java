@@ -1,7 +1,6 @@
 package es.codeurjc.mca.tfm.purchases.application.controllers;
 
 import es.codeurjc.mca.tfm.purchases.application.dtos.responses.ShoppingCartResponseDto;
-import es.codeurjc.mca.tfm.purchases.application.exceptions.InternalServerErrorException;
 import es.codeurjc.mca.tfm.purchases.application.exceptions.NotFoundException;
 import es.codeurjc.mca.tfm.purchases.application.mappers.ApplicationShoppingCartMapper;
 import es.codeurjc.mca.tfm.purchases.domain.dtos.ShoppingCartDto;
@@ -55,22 +54,11 @@ public class ShoppingCartQueryController {
   @GetMapping("/{id}")
   public ResponseEntity<ShoppingCartResponseDto> getShoppingCart(@PathVariable(name = "id") Long id,
       Authentication authentication) {
-    Integer userId = null;
-    try {
-      userId = Integer.valueOf(authentication.getName());
-      ShoppingCartDto shoppingCartDto = this.shoppingCartUseCase.get(id, userId)
-          .orElseThrow(
-              () -> new NotFoundException("Shopping cart not found with id for logged user"));
+    Integer userId = Integer.valueOf(authentication.getName());
+    ShoppingCartDto shoppingCartDto = this.shoppingCartUseCase.get(id, userId)
+        .orElseThrow(() -> new NotFoundException("Shopping cart not found."));
 
-      return ResponseEntity.ok(this.applicationShoppingCartMapper.map(shoppingCartDto));
-    } catch (NotFoundException notFoundException) {
-      log.error("Shopping cart not found with id and user", id, userId);
-      throw notFoundException;
-    } catch (Exception e) {
-      log.error(e.getMessage());
-      e.printStackTrace();
-      throw new InternalServerErrorException(e.getMessage());
-    }
+    return ResponseEntity.ok(this.applicationShoppingCartMapper.map(shoppingCartDto));
   }
 
 }

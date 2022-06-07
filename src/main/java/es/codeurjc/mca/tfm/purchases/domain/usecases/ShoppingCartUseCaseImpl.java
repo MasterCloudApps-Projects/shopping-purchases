@@ -95,7 +95,7 @@ public class ShoppingCartUseCaseImpl implements ShoppingCartUseCase {
     if (shoppingCartDtoOptional.isPresent()) {
       ShoppingCart shoppingCart = DomainMapper.map(shoppingCartDtoOptional.get());
       if (!shoppingCart.isCompletable()) {
-        throw new IllegalShoppingCartStateException("Can't complete cart");
+        throw new IllegalShoppingCartStateException("Shopping cart can't be completed.");
       }
       shoppingCart.complete();
       ShoppingCartDto shoppingCartDto = DomainMapper.map(shoppingCart);
