@@ -10,7 +10,6 @@ on:
 
 jobs:
   deploy:
-    needs: [ publish-image ]
     name: Deploy in k8s
     runs-on: ubuntu-latest
     steps:
