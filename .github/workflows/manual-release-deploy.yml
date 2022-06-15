@@ -26,7 +26,7 @@ jobs:
           values: |
             namespace: tfm-amartinm82
             image:
-              tag: ${{ github.ref_name }}
+              tag: ${{ github.event.inputs.release }}
             mysql:
               host: '${{ secrets.MYSQL_HOST }}'
               password: '${{ secrets.MYSQL_PASSWORD }}'
