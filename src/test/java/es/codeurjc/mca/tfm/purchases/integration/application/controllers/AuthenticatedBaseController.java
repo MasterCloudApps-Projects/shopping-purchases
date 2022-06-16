@@ -47,7 +47,7 @@ public abstract class AuthenticatedBaseController extends TestContainersBase {
 
   protected static final String LOCATION_HEADER = "Location";
 
-  protected static final long WAIT_TIME = 2000L;
+  protected static final long WAIT_TIME = 2500L;
 
   protected static final Long SHOPPING_CART_ID = 1L;
 
