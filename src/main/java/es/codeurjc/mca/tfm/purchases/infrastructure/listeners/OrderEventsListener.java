@@ -124,6 +124,8 @@ public class OrderEventsListener {
   @KafkaListener(topics = "${kafka.topics.changeState}", groupId = "${kafka.groupId}")
   public void onOrderStateChanged(String orderChangeRequestedEvent) throws Exception {
     try {
+      // To avoid change state before a previous update order state ir performed
+      Thread.sleep(200);
       log.info("Received orderChangeRequestedEvent {}", orderChangeRequestedEvent);
       OrderUpdateRequestedEvent orderUpdateEvent = this.objectMapper.readValue(
           orderChangeRequestedEvent, OrderUpdateRequestedEvent.class);
@@ -133,6 +135,8 @@ public class OrderEventsListener {
       log.error(illegalOrderStateException.getMessage());
     } catch (PreviousOrderStateUpdateException previousOrderStateUpdateException) {
       log.error(previousOrderStateUpdateException.getMessage());
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
     } catch (Exception e) {
       log.error("Error processing event {}: {}", orderChangeRequestedEvent, e.getMessage());
       throw e;
